@@ -1,7 +1,7 @@
 let x = 0;
 let y = 0;
-let rightTurns = 0;
-let leftTurns = 0;
+let negative45Turns = 0;
+let positive45Turns = 0;
 const history = [];
 // use cardinal directions
 const DIRECTIONS = [
@@ -26,7 +26,7 @@ function move(){
     let nextMove = cleanPath(exc1)
     if(nextMove === "collision"){
         console.log("collison");
-        rightTurns ++;
+        negative45Turns ++;
     } else {
         history.push(nextMove);
     }
@@ -34,7 +34,8 @@ function move(){
 
 function cleanPath(matrix){
     //overlap here?
-    switch(DIRECTIONS[(rightTurns - leftTurns) % 4]){
+
+    switch(DIRECTIONS[(negative45Turns - positive45Turns) % 4]){
         case "right":
             if(matrix[y][x + 1] === undefined || matrix[y][x + 1] === 'o'){
                 return "collision";
@@ -79,6 +80,7 @@ const exc1 = [
     ['-','-','-','-','-','-'],
     ['-','-','-','-','-','-'],
 ]
+
 let i = 0
 
 while (i < 20){
