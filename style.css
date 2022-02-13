@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+html, body{
+    font-family: roboto;
+    display: flex;
+}
+
+.side-bar{
+    padding-right: 3vh;
+    border-right: 2px solid;
+}
+
+.side-bar > div {
+    display: flex;
+}
+
+.side-bar > div > h2 {
+    padding-right: 2vh;
+}
+
+.side-bar > div > button {
+    font-size: large;
+    display: flex;
+    padding-right: 2vh;
+    margin: 1vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.matrix{
+    padding-left: 3vh;
+}
+
+.obstacle {
+    background-color: black;
+}
+
+.clean {
+    background-color: red;
+}
+
+.dirty {
+    background-color: white;
+}
+
+.matrix > div {
+    display: flex;
+}
+
+.matrix > div > div {
+    border-width: 2px;
+    border-style: solid;
+    margin: 0.5vh;
+    width: 2vh;
+    height: 2vh;
+    border-radius: 50%;
+}
+

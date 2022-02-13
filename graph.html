@@ -5,8 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movement Graph</title>
+    <link href="style.css" rel="stylesheet"/>
 </head>
 <body>
-    <input>
+    <div class="side-bar">
+        <div class="width">
+            <h2>width: </h2>
+            <h2 id="width-display"></h2>
+            <button id="width-up-button">↑</button>
+            <button id="width-down-button">↓</button>
+        </div>
+        <div class="heigth">
+            <h2>heigth: </h2>
+            <h2 id="heigth-display"></h2>
+            <button id="heigth-up-button">↑</button>
+            <button id="heigth-down-button">↓</button>
+        </div>
+        <div>
+            <button id="get-matrix-button">Get Matrix</button>
+        </div>
+    </div>
+    <div class="matrix" id="matrix">
+    </div>
+
 </body>
+<script src="graph.js"></script>
 </html>
