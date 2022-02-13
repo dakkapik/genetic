@@ -14,74 +14,56 @@ const heightDownButton = document.getElementById("heigth-down-button");
 widthDisplay.innerHTML = width;
 heightDisplay.innerHTML = height;
 
-widthUpButton.addEventListener("click", updateMatrix);
-widthDownButton.addEventListener("click", updateMatrix);
-heightUpButton.addEventListener("click", updateMatrix);
-heightDownButton.addEventListener("click", updateMatrix);
+widthUpButton.addEventListener("click", updateMatrixDimensions);
+widthDownButton.addEventListener("click", updateMatrixDimensions);
+heightUpButton.addEventListener("click", updateMatrixDimensions);
+heightDownButton.addEventListener("click", updateMatrixDimensions);
 
 getMatrixButton.addEventListener("click", () => console.log(matrix));
 
 generateMatrix(matrix);
 
-function updateMatrix(e){
+function updateMatrixDimensions(e){
     const [dimension, sign] = e.path[0].id.split('-');
 
     if(dimension === "width"){
         if(sign === "down" && !(width <= 1)){
             width --;
-            widthDisplay.innerHTML = width;
-            matrix = updateMatrixDimensions(dimension, sign);
+            matrix = updateMatrixValues();
         } else if(sign === "up"){
             width ++;
-            widthDisplay.innerHTML = width;
-            matrix = updateMatrixDimensions(dimension, sign);
+            matrix = updateMatrixValues();
         }
     } else {
         if(sign === "down" && !(height <= 1)){
             height --;
-            heightDisplay.innerHTML = height;
-            matrix = updateMatrixDimensions(dimension, sign);
+            matrix = updateMatrixValues();
         } else if(sign==="up") {
             height ++;
-            heightDisplay.innerHTML = height;
-            matrix = updateMatrixDimensions(dimension, sign);
+            matrix = updateMatrixValues();
         }
     }
+    updateMatrixDisplay()
 };
 
-function generateMatrix (matrix) {
+function generateMatrix (newMatrix) {
+    if(newMatrix[0] == 0) return console.error("ERROR: matrix must have at least one cell")
+    matrix = newMatrix;
+    width = matrix[0].length
+    height = matrix.length
+    updateMatrixValues()
+    updateMatrixDisplay()
+};
+
+function updateMatrixDisplay() {
     removeChilds(matrixDisplay);
-    width = matrix[0].length;
     widthDisplay.innerHTML = width;
-    height = matrix.length;
     heightDisplay.innerHTML = height;
     for(let y = 0; y < height; y++){
         const row = document.createElement("div");
         for(let x = 0; x < width; x ++){
             const cell = document.createElement("div");
-
             cell.id = `${x}-${y}`;
-            if(matrix[y][x] === 'o') cell.className = "obstacle";
-            else cell.className = "dirty";
-
-            cell.addEventListener("click", deltaObstacle);
-            row.append(cell);
-        }
-        matrixDisplay.append(row);
-    };
-};
-    
-function updateMatrixDimensions () {
-    removeChilds(matrixDisplay);
-    let newMatrix = [];
-    for(let y = 0; y < height; y++){
-        let newRow = []
-        const row = document.createElement("div");
-        for(let x = 0; x < width; x ++){
-            newRow.push("-");
-            const cell = document.createElement("div");
-            cell.id = `${x}-${y}`;
-            // THIS FUNCTION NEEDS TO BE FIXED, BREAKS UPDATE METHOD
             switch(matrix[y][x]){
                 case '-':
                     cell.className = "dirty";
@@ -96,8 +78,32 @@ function updateMatrixDimensions () {
             cell.addEventListener("click", deltaObstacle);
             row.append(cell);
         }
-        newMatrix.push(newRow);
         matrixDisplay.append(row);
+    }
+}
+    
+function updateMatrixValues () {
+    let newMatrix = [];
+    for(let y = 0; y < height; y++){
+        let newRow = [];
+        for(let x = 0; x < width; x ++){
+            if(matrix[y]){
+                switch(matrix[y][x]){
+                    case 'o':
+                        newRow.push('o');
+                    break;
+                    case 'x':
+                        newRow.push('x');
+                    break;
+                    default:
+                        newRow.push('-');
+                    break;
+                };
+            } else {
+                newRow.push('-')
+            }
+        }
+        newMatrix.push(newRow);
     }
     return newMatrix;
 };
@@ -129,35 +135,8 @@ function removeChilds (parent) {
 };
 
 function matrix1 () { return [
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
+    ["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"],
+    ["-","-","-","-","-","-","-","-","-","-",
         "-",
         "-",
         "-",
