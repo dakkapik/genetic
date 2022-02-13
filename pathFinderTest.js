@@ -3,13 +3,8 @@ let y = 0;
 let negative45Turns = 0;
 let positive45Turns = 0;
 const history = [];
+
 // use cardinal directions
-const DIRECTIONS = [
-    "right",
-    "down",
-    "left",
-    "up"
-];
 
 const VECTOR = [
     "west",
@@ -23,48 +18,127 @@ const VECTOR = [
 ];
 
 function move(){
-    let nextMove = cleanPath(exc1)
-    if(nextMove === "collision"){
-        console.log("collison");
-        negative45Turns ++;
+    let direction = VECTOR[(negative45Turns - positive45Turns) % 8]
+    let nextMove = cleanPath(exc1, direction)
+
+    if(typeof nextMove === "object"){
+        history.push({currentMatrix: nextMove, direction});
     } else {
-        history.push(nextMove);
+        console.log(nextMove);
+        if(nextMove === "collision"){
+            negative45Turns = negative45Turns + 2 ;
+        } else if (nextMove === "obstacle"){
+            negative45Turns ++;
+        } else if (nextMove === "overlap"){
+            negative45Turns ++;
+        }
+
     }
 }
 
-function cleanPath(matrix){
+function cleanPath(matrix, direction){
     //overlap here?
-
-    switch(DIRECTIONS[(negative45Turns - positive45Turns) % 4]){
-        case "right":
-            if(matrix[y][x + 1] === undefined || matrix[y][x + 1] === 'o'){
+    switch(direction){
+        case "west":
+            if(matrix[y][x + 1] === undefined){
                 return "collision";
+            } else if(matrix[y][x + 1] === 'o'){
+                return "obstacle";
+            } else if(matrix[y][x + 1] === 'x'){
+                return "overlap";
             } else {
                 x++;
                 matrix[y][x] = "x";
                 return matrix;        
             } 
-        case "down":
-            if(matrix[y + 1] === undefined || matrix[y + 1][x] === 'o'){
+        
+        case "south-west":
+            if(matrix[y + 1][x + 1] === undefined){
                 return "collision";
+            } else if(matrix[y + 1][x + 1] === 'o'){
+                return "obstacle";
+            } else if(matrix[y + 1][x + 1] === 'x'){
+                return "overlap";
+            } else {
+                x++; y++;
+                matrix[y][x] = "x";
+                return matrix;        
+            } 
+        
+        case "south":
+            if(matrix[y + 1] === undefined){
+                return "collision";
+            } else if(matrix[y + 1][x] === 'o') {
+                return "obstacle";
+            } else if(matrix[y + 1][x] === 'x') {
+                return "overlap";
             } else {
                 y ++;
                 matrix[y][x] = 'x';   
                 return matrix;     
             } 
-        case "left":
-            if(matrix[y][x - 1] === undefined || matrix[y][x - 1] === 'o'){
+
+        case "south-east":
+            if(matrix[y + 1] === undefined){
                 return "collision";
+            } else if(matrix[y + 1][x - 1] === 'o') {
+                return "obstacle";
+            } else if(matrix[y + 1][x - 1] === 'x') {
+                return "overlap";
             } else {
+                y ++; x --;
+                matrix[y][x] = 'x';   
+                return matrix;     
+            } 
+
+        case "east":
+            if(matrix[y][x - 1] === undefined){
+                return "collision";
+            } else if (matrix[y][x - 1] === 'o'){
+                return "obstacle";
+            } else if (matrix[y][x - 1] === 'x'){
+                return "overlap";
+            }else {
                 x --;
                 matrix[y][x] = 'x';
                 return matrix;        
-            } 
-        case "up":
-            if(matrix[y - 1] === undefined || matrix[y - 1][x] === 'o'){
+            }
+
+        case "north-east":
+            if(matrix[y - 1][x - 1] === undefined){
                 return "collision";
-            } else {
+            } else if (matrix[y - 1][x - 1] === 'o'){
+                return "obstacle";
+            } else if (matrix[y - 1][x - 1] === 'x'){
+                return "overlap";
+            }else {
+                x --; y --;
+                matrix[y][x] = 'x';
+                return matrix;        
+            }
+
+        case "north":
+            if(matrix[y - 1] === undefined){
+                return "collision";
+            } else if(matrix[y - 1][x] === 'o'){
+                return "obstacle";
+            } else if(matrix[y - 1][x] === 'x'){
+                return "overlap";
+            }else {
                 y --;
+                matrix[y][x] = 'x';    
+                return matrix;    
+            } 
+        
+        case "north-west":
+            if(matrix[y - 1] === undefined){
+                return "collision";
+            } else if(matrix[y - 1][x + 1] === 'o'){
+                return "obstacle";
+            } else if(matrix[y - 1][x + 1] === 'x'){
+                return "overlap";
+            }else {
+                x ++; y --;
                 matrix[y][x] = 'x';    
                 return matrix;    
             } 
@@ -73,7 +147,7 @@ function cleanPath(matrix){
 }
 
 const exc1 = [
-    ['x','-','-','','-','-'],
+    ['x','-','-','-','-','-'],
     ['o','-','-','-','-','-'],
     ['-','-','o','o','o','-'],
     ['-','-','-','-','-','-'],
@@ -83,9 +157,9 @@ const exc1 = [
 
 let i = 0
 
-while (i < 20){
+while (i < 23){
     move()
-    i++;
+    i ++;
 }
-
-console.log(history)
+console.log( x, y)
+console.log(history[history.length - 1])
