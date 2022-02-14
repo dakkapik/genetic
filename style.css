@@ -107,13 +107,13 @@ html, body{
 
 .south-east-connector {
     top: 0vh;
-    left: 2vh;
+    left: 2.5vh;
     transform: rotate(45deg) scaleX(4);
     transform: rotate(45deg) scaleX(5);
 }
 
 .south-west-connector {
-    left: 3vh;
+    left: 4vh;
     top: -0.4vh;
     transform: rotate(45deg) scaleY(4);
     
