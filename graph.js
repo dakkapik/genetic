@@ -84,6 +84,8 @@ function updateMatrixDisplay() {
             if(x < width - 1){
                 const connectorEast = document.createElement("div");
                 connectorEast.className = "connector-east";
+                connectorEast.id = `${x}-${y}/${x + 1}-${y}`;
+                connectorEast.addEventListener("click", deltaConnector);
                 row.append(connectorEast);
 
                 const midConnector = document.createElement("div");
@@ -92,13 +94,22 @@ function updateMatrixDisplay() {
                 if(y < height - 1){
                     const connectorSouth = document.createElement("div");
                     connectorSouth.className = "south-connector";
+                    connectorSouth.id = `${x}-${y}/${x}-${y + 1}`;
+                    connectorSouth.addEventListener("click", deltaConnector);
+
                     const connectorSouthEast = document.createElement("div");
                     connectorSouthEast.className = "south-east-connector";
+                    connectorSouthEast.id = `${x}-${y}/${x + 1}-${y + 1}`;
+                    connectorSouthEast.addEventListener("click", deltaConnector);
+
                     const connectorSouthWest = document.createElement("div");
                     connectorSouthWest.className = "south-west-connector";
+                    connectorSouthWest.id = `${x + 1}-${y}/${x}-${y + 1}`;
+                    connectorSouthWest.addEventListener("click", deltaConnector);
+
                     midConnector.append(connectorSouth);
-                    midConnector.append(connectorSouthEast);
                     midConnector.append(connectorSouthWest);
+                    midConnector.append(connectorSouthEast);
                 }
                 midConnectors.append(midConnector);
             };
@@ -106,8 +117,12 @@ function updateMatrixDisplay() {
             if(x === width - 1 && y < height - 1){
                 const midConnector = document.createElement("div");
                 midConnector.className = "mid-connector";
+
                 const connectorSouth = document.createElement("div");
                 connectorSouth.className = "south-connector";
+                connectorSouth.id = `${x}-${y}/${x}-${y + 1}`;
+                connectorSouth.addEventListener("click", deltaConnector);
+
                 midConnector.append(connectorSouth)
                 midConnectors.append(midConnector)
             }
@@ -164,6 +179,11 @@ function deltaObstacle (e) {
     }
 };
     
+function deltaConnector (e) {
+    console.log(e.path[0].id)
+    console.log(e.path[0].className)
+}
+
 function removeChilds (parent) {
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
