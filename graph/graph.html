@@ -23,17 +23,21 @@
             <button id="heigth-down-button">↓</button>
         </div>
         <div>
-            <button id="get-matrix-button">Get Matrix</button>
-            <button id="send-matrix-button">Send Matrix</button>
+            <!-- <button id="get-matrix-button">Get Matrix</button> -->
+            <button id="post-matrix-button">Send Matrix</button>
         </div>
         <div>
             <!-- <button id="add-matrix-button">Upload Matrix</button> -->
         </div>
         <div>
-            <h2>History: </h2> <h2 id="history-value">1</h2>
+            <input type="number" id="iteration-select"/>
+            <button id="set-iteration-button">Set iterations</button>
+        </div>
+        <div>
+            <h2>History: </h2> <h2 id="history-value">0</h2>
         </div>
         <div class="slidecontainer">
-            <input type="range" min="1" max="100" value="1" class="slider" id="history-slider">
+            <input type="range" min="0" max="40" value="0" class="slider" id="history-slider">
         </div>
     </div>
     <div class="matrix" id="matrix">
@@ -41,5 +45,5 @@
 
 </body>
 <script src="graph.js"></script>
-<script src="history.js"></script>
+<script src="sidebar.js"></script>
 </html>

@@ -1,27 +1,21 @@
 let width = 1;
 let height = 1;
-let matrix = [['-']];
+let matrix = [
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', '-', '-', '-', '-'],
+];
 
-const matrixDisplay = document.getElementById("matrix");
 const widthDisplay = document.getElementById("width-display");
 const heightDisplay = document.getElementById("heigth-display");
-const getMatrixButton = document.getElementById("get-matrix-button");
-const postMatrixButton = document.getElementById("post-matrix-button");
-// const getMatrixButton = document.getElementById("get-matrix-button");
-const widthUpButton = document.getElementById("width-up-button");
-const widthDownButton = document.getElementById("width-down-button");
-const heightUpButton = document.getElementById("heigth-up-button");
-const heightDownButton = document.getElementById("heigth-down-button");
+const matrixDisplay = document.getElementById("matrix");
 
 widthDisplay.innerHTML = width;
 heightDisplay.innerHTML = height;
-
-widthUpButton.addEventListener("click", updateMatrixDimensions);
-widthDownButton.addEventListener("click", updateMatrixDimensions);
-heightUpButton.addEventListener("click", updateMatrixDimensions);
-heightDownButton.addEventListener("click", updateMatrixDimensions);
-
-getMatrixButton.addEventListener("click", () => console.log(matrix));
 
 generateMatrix(matrix);
 
