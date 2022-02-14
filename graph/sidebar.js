@@ -1,4 +1,3 @@
-// const getMatrixButton = document.getElementById("get-matrix-button");
 let history = [];
 let historyLength = 40;
 const postMatrixButton = document.getElementById("post-matrix-button");
@@ -24,7 +23,7 @@ postMatrixButton.onclick = postMatrix;
 setIterationsButton.onclick = updateHistorySlide;
 
 function postMatrix() {
-    
+
     const port = "3000"
     const host = "localhost"
     const requestString = "http://" + host + ':' + port + '/' + historyLength
