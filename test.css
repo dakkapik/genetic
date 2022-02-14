@@ -28,13 +28,15 @@ html, body{
 }
 
 .matrix{
+    display: flex;
+    flex-direction: column;
     padding-left: 3vh;
 }
 
 .obstacle {
     z-index: 1;
     background-color: black;
-    border-width: 0.1vh;
+    border-width: 1px;
     border-style: solid;
     margin-right: 0;
     margin-bottom: 0;
@@ -46,7 +48,7 @@ html, body{
 .clean {
     z-index: 1;
     background-color: red;
-    border-width: 0.1vh;
+    border-width: 1px;
     border-style: solid;
     margin-right: 0;
     margin-bottom: 0;
@@ -58,7 +60,7 @@ html, body{
 .dirty {
     z-index: 1;
     background-color: white;
-    border-width: 0.1vh;
+    border-width: 1px;
     border-style: solid;
     margin-right: 0;
     margin-bottom: 0;
@@ -67,52 +69,46 @@ html, body{
     border-radius: 50%;
 }
 
-.matrix > div {
+.matrix  div {
     display: flex;
-}
-
-.mid-connectors{
-    height: 1vh;
+    flex-direction: row;
 }
 
 .connector-east {
     transform: scaleX(2);
     position: relative;
     top: 2vh;
-    border: 0.1vh solid;
+    border: 1px solid;
     width: 1vh;
     height: 0.8vh;
 }
 
-.mid-connector {
-    display: flex;
-    margin-right: 0;
-    width: 6.6vh ;
+.mid-connectors {
+    margin-right: 2.3vh;
 }
 
-.mid-connector > div {
+.mid-connectors > div {
     z-index: -1;
     position: relative;
     border: 1px solid;
     width: 1vh;
     height: 1vh;
-    padding-right: 0.1vh;
 }
 
-.south-connector{
+.south{
     left: 2vh;
     top: -0.2vh;
     transform: scaleY(2);
 }
 
-.south-east-connector {
-    left: 4vh;
-    top: -0.1vh;
+.south-east {
+    left: +4vh;
+    top: -0.2vh;
     transform: rotate(45deg) scaleY(4);
 }
 
-.south-west-connector {
-    top: 0.4vh;
+.south-west {
+    top: 0.3vh;
     left: 3vh;
     transform: rotate(45deg) scaleX(5);
     transform: rotate(45deg) scaleX(5);

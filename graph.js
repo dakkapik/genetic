@@ -61,6 +61,9 @@ function updateMatrixDisplay() {
     heightDisplay.innerHTML = height;
     for(let y = 0; y < height; y++){
         const row = document.createElement("div");
+        if(y < height - 1){}
+        const midConnectors = document.createElement("div");
+        midConnectors.className = "mid-connectors"
         for(let x = 0; x < width; x ++){
             const cell = document.createElement("div");
             cell.id = `${x}-${y}`;
@@ -77,8 +80,41 @@ function updateMatrixDisplay() {
             };
             cell.addEventListener("click", deltaObstacle);
             row.append(cell);
-        }
+
+            if(x < width - 1){
+                const connectorEast = document.createElement("div");
+                connectorEast.className = "connector-east";
+                row.append(connectorEast);
+
+                const midConnector = document.createElement("div");
+                midConnector.className = "mid-connector";
+                
+                if(y < height - 1){
+                    const connectorSouth = document.createElement("div");
+                    connectorSouth.className = "south-connector";
+                    const connectorSouthEast = document.createElement("div");
+                    connectorSouthEast.className = "south-east-connector";
+                    const connectorSouthWest = document.createElement("div");
+                    connectorSouthWest.className = "south-west-connector";
+                    midConnector.append(connectorSouth);
+                    midConnector.append(connectorSouthEast);
+                    midConnector.append(connectorSouthWest);
+                }
+                midConnectors.append(midConnector);
+            };
+
+            if(x === width - 1 && y < height - 1){
+                const midConnector = document.createElement("div");
+                midConnector.className = "mid-connector";
+                const connectorSouth = document.createElement("div");
+                connectorSouth.className = "south-connector";
+                midConnector.append(connectorSouth)
+                midConnectors.append(midConnector)
+            }
+        };
+
         matrixDisplay.append(row);
+        matrixDisplay.append(midConnectors);
     }
 }
     
@@ -135,265 +171,10 @@ function removeChilds (parent) {
 };
 
 function matrix1 () { return [
-    ["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"],
-    ["-","-","-","-","-","-","-","-","-","-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "o",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "o",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "o",
-        "o",
-        "o",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "o",
-        "o",
-        "o",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "o",
-        "o",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "o",
-        "o",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "o",
-        "o",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ],
-    [
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-",
-        "-"
-    ]
+    [ 'x', 'x', 'x', 'x', 'x', 'x' ],
+    [ 'o', 'x', '-', '-', '-', 'x' ],
+    [ 'x', '-', 'o', 'o', 'o', 'x' ],
+    [ 'x', '-', '-', '-', '-', 'x' ],
+    [ 'x', '-', '-', '-', '-', 'x' ],
+    [ 'x', 'x', 'x', 'x', 'x', 'x' ]
 ]}
