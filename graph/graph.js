@@ -1,11 +1,13 @@
 let width = 1;
 let height = 1;
-// let matrix = [['-']];
-let matrix = matrix1()
+let matrix = [['-']];
+
 const matrixDisplay = document.getElementById("matrix");
 const widthDisplay = document.getElementById("width-display");
 const heightDisplay = document.getElementById("heigth-display");
 const getMatrixButton = document.getElementById("get-matrix-button");
+const postMatrixButton = document.getElementById("post-matrix-button");
+// const getMatrixButton = document.getElementById("get-matrix-button");
 const widthUpButton = document.getElementById("width-up-button");
 const widthDownButton = document.getElementById("width-down-button");
 const heightUpButton = document.getElementById("heigth-up-button");
@@ -190,11 +192,3 @@ function removeChilds (parent) {
     };
 };
 
-function matrix1 () { return [
-    [ 'x', 'x', 'x', 'x', 'x', 'x' ],
-    [ 'o', 'x', '-', '-', '-', 'x' ],
-    [ 'x', '-', 'o', 'o', 'o', 'x' ],
-    [ 'x', '-', '-', '-', '-', 'x' ],
-    [ 'x', '-', '-', '-', '-', 'x' ],
-    [ 'x', 'x', 'x', 'x', 'x', 'x' ]
-]}

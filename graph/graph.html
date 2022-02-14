@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movement Graph</title>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="sidebar.css" rel="stylesheet"/>
+    <link href="graph.css" rel="stylesheet"/>
 </head>
 <body>
     <div class="side-bar">
@@ -23,6 +24,16 @@
         </div>
         <div>
             <button id="get-matrix-button">Get Matrix</button>
+            <button id="send-matrix-button">Send Matrix</button>
+        </div>
+        <div>
+            <!-- <button id="add-matrix-button">Upload Matrix</button> -->
+        </div>
+        <div>
+            <h2>History: </h2> <h2 id="history-value">1</h2>
+        </div>
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="1" class="slider" id="history-slider">
         </div>
     </div>
     <div class="matrix" id="matrix">
@@ -30,4 +41,5 @@
 
 </body>
 <script src="graph.js"></script>
+<script src="history.js"></script>
 </html>
