@@ -1,6 +1,7 @@
 let history = [];
 let historyLength = 40;
 const postMatrixButton = document.getElementById("post-matrix-button");
+const getMatrixButton = document.getElementById("get-matrix-button");
 const setIterationsButton = document.getElementById("set-iteration-button");
 const iterarionInput = document.getElementById("iteration-select");
 const historySlider = document.getElementById("history-slider");
@@ -19,6 +20,7 @@ widthDownButton.addEventListener("click", updateMatrixDimensions);
 heightUpButton.addEventListener("click", updateMatrixDimensions);
 heightDownButton.addEventListener("click", updateMatrixDimensions);
 
+getMatrixButton.onclick = getMatrix;
 postMatrixButton.onclick = postMatrix; 
 setIterationsButton.onclick = updateHistorySlide;
 
@@ -52,6 +54,10 @@ function updateHistorySlide(){
     historySlider.max = iterarionInput.value;
 
     historyLength = iterarionInput.value;
+}
+
+function getMatrix() {
+  console.log(matrix)
 }
 
 

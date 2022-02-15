@@ -23,32 +23,33 @@ module.exports = function (incomingMatrix, historyLength) {
         direction: VECTOR[(negative45Turns - positive45Turns) % 8 ] 
     }];
     
-    let i = 0;
-
-    while(i < historyLength){
-        move();
-        i ++;
-    };
-    
+    move(historyLength);
     return history;
     
-    function move(){
-        const direction = VECTOR[(negative45Turns - positive45Turns) % 8];
-        const newMatrix = cleanPath(matrix, direction);
 
-        if(typeof newMatrix === "object"){
-            
-            history.push({currentMatrix: JSON.stringify(newMatrix), direction})
+    function move(moveAmount){
+        let iterator = 0;
+        if(!moveAmount) moveAmount = 1;
+
+        while(iterator < moveAmount){
+            const direction = VECTOR[(negative45Turns - positive45Turns) % 8];
+            const newMatrix = cleanPath(matrix, direction);
     
-        } else {
-            if(newMatrix === "collision"){
-                negative45Turns = negative45Turns + 2 ;
-            } else if (newMatrix === "obstacle"){
-                negative45Turns ++;
-            } else if (newMatrix === "overlap"){
-                negative45Turns ++;
+            if(typeof newMatrix === "object"){
+                
+                history.push({currentMatrix: JSON.stringify(newMatrix), direction})
+        
+            } else {
+                if(newMatrix === "collision"){
+                    negative45Turns = negative45Turns + 2 ;
+                } else if (newMatrix === "obstacle"){
+                    negative45Turns ++;
+                } else if (newMatrix === "overlap"){
+                    negative45Turns ++;
+                }
+        
             }
-    
+            iterator ++;
         }
     }
     
