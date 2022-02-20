@@ -1,5 +1,5 @@
 // const matrix = require("./testArray/cleanArray.json")
-const MATRIX = require("./testArray/obstacleArray.json")
+const MATRIX = require("../testArray/obstacleArray.json")
 const DEFAULT_SCAN_RADIUS = 5;
 let currentPosition = {x: 0, y: 0}
 
