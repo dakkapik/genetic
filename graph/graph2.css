@@ -10,3 +10,15 @@
 .obstacle {
     background-color: black;
 }
+.dirty {
+    background-color: white;
+}
+.open {
+    background-color: green;
+}
+.closed {
+    background-color: blue;
+}
+.path {
+    background-color: red;
+}

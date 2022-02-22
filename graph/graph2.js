@@ -8,33 +8,33 @@ let matrix = generateMatrixObstract(obstacleRatio)
 updateMatrixDisplay(matrix);
 
 
-const updateMatrixDimensions = (e) => {
-    const [ dimension, sign ] = e.path[0].id.split('-');
-    if(dimension === "columns"){
-        if(sign === "up"){
-            columns ++;
-        } else {
-            columns --;
-        }
-    } else {
-        if(sign === "up"){
-            columns ++;
-        } else {
-            rows --;
-        }
-    }
-    updateMatrixValues();
-    updateMatrixDisplay();
-}
+// const updateMatrixDimensions = (e) => {
+//     const [ dimension, sign ] = e.path[0].id.split('-');
+//     if(dimension === "columns"){
+//         if(sign === "up"){
+//             columns ++;
+//         } else {
+//             columns --;
+//         }
+//     } else {
+//         if(sign === "up"){
+//             columns ++;
+//         } else {
+//             rows --;
+//         }
+//     }
+//     updateMatrixValues();
+//     updateMatrixDisplay();
+// }
 
-const updateMatrix = () => {
+// const updateMatrix = () => {
 
-}
+// }
 
-const importMatrix = ( matrix ) => {
-    columns = matrix[0].length
-    rows = matrix.length
-}
+// const importMatrix = ( matrix ) => {
+//     columns = matrix[0].length
+//     rows = matrix.length
+// }
 
 function generateMatrixObstract ( obstaclesRatio ) {
     const newMatrix = new Array(columns)
@@ -56,9 +56,9 @@ function generateMatrixObstract ( obstaclesRatio ) {
     return newMatrix;
 }
 
-function updateDisplay () {
+// function updateDisplay () {
 
-}
+// }
 
 function removeChilds (parent) {
     while (parent.lastChild) {
@@ -67,6 +67,7 @@ function removeChilds (parent) {
 };
 
 function updateMatrixDisplay ( matrix ) {
+    removeChilds(matrixDisplay)
     for (let y = 0; y < matrix.length; y++){
         const row = document.createElement("div");
         for(let x = 0; x < matrix[0].length; x++){
@@ -80,6 +81,15 @@ function updateMatrixDisplay ( matrix ) {
                 break;
                 case 'o':
                     cell.className = "obstacle"
+                break;
+                case 'u':
+                    cell.className = "open"
+                break;
+                case 'c':
+                    cell.className = "closed"
+                break;
+                case 'x':
+                    cell.className = "path"
                 break;
             }
             row.append(cell);

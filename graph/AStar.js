@@ -1,82 +1,93 @@
-const startPoint = {x: 0, y: 0, steps: 0, f: 0};
+let startPoint
 const endPoint = {x: matrix[0].length - 1,y: matrix.length - 1};
 const path = [];
 
 const openSet = new Set();
-openSet.add(startPoint)
 const closedSet = new Set();
 
-//// iterate through close and open set to display current search
-while(openSet.size > 0){
-    
-    openSet.forEach(point=>{
-        matrix[point.y][point.x] = 'u' 
-        //display opened points
-    })
-    
-    closedSet.forEach(point=>{
-        // console.log(point)
-        matrix[point.y][point.x] = 'c' 
-        //display closed points
-    })
-    
-    // updateMatrixDisplay(matrix)
 
-    let lowestF;
-    // console.log(openSet)
-    openSet.forEach(point => {
-        if(lowestF){
-            if(point.f < lowestF.f){
-                lowestF = point;
-            }
-        } else {
-            lowestF = point;
-        }
-    })
-
-    let current = lowestF;
-
-    if(current.x === endPoint.x && current.y === endPoint.y){
-        console.log("END");
-        let temp = current
-        path.push(temp)
-        while(temp.previous){
-            path.push(temp.previous)
-            temp = temp.previous
-        }
-        drawPath(path)
-        break;
-    }
-
-    openSet.delete(current);
-
-    getNeighbors(current).forEach(point=>{
-
-        if(!closedSet.has(point)){
-            const tempSteps = current.steps + 1
-            if(openSet.has(point)){
-                oldScore = openSet.values(point)
-                if(tempSteps < oldScore.steps){
-                    const betterPathPoint = point
-                    betterPathPoint.steps = tempSteps
-                    betterPathPoint.previous = current
-
-                    openSet.add(betterPathPoint)
-                    openSet.delete(point)
-                }
-            } else {
-                point.steps = tempSteps
-                point.f = getHeuristic(point, endPoint)
-                point.previous = current
-                openSet.add(point)
-            }
-
-        }
-    })
-    closedSet.add(current);
-    updateMatrixDisplay(matrix);
+function startOn(x, y){
+    startPoint = {x, y, steps: 0, f: 0};
+    openSet.add(startPoint);
 }
 
+startOn(0,0); 
+
+//// iterate through close and open set to display current search
+
+// const interval = setInterval(run, 20)
+
+// while (openSet.size > 0) run()
+
+function run(){
+    let lowestF;
+    if(openSet.size > 0){
+
+        openSet.forEach(point => {
+            if(lowestF){
+                if(point.f < lowestF.f){
+                    lowestF = point;
+                }
+            } else {
+                lowestF = point;
+            }
+        })
+
+        let current = lowestF;   
+
+        if(current.x === endPoint.x && current.y === endPoint.y){
+            console.log("END");
+            let temp = current
+            path.push(temp)
+            while(temp.previous){
+                path.push(temp.previous)
+                temp = temp.previous
+            }
+            drawPath(path)
+            clearInterval(interval)
+        }
+
+        openSet.delete(current);
+        closedSet.add(current);
+        
+        openSet.forEach(point=>{
+            matrix[point.y][point.x] = 'u' 
+            //display opened points
+        })
+        
+        closedSet.forEach(point=>{
+            matrix[point.y][point.x] = 'c' 
+            //display closed points
+        })
+
+        getNeighbors(current).forEach(point=>{
+            if(!closedSet.has(point)){
+                const tempSteps = current.steps + 1
+                if(openSet.has(point)){
+                    oldScore = openSet.values(point)
+                    if(tempSteps < oldScore.steps){
+                        const betterPathPoint = point
+                        betterPathPoint.steps = tempSteps
+                        betterPathPoint.previous = current
+
+                        openSet.add(betterPathPoint)
+                        openSet.delete(point)
+                    }
+                } else {
+                    point.steps = tempSteps
+                    point.f = getHeuristic(point, endPoint) + point.steps
+                    point.previous = current
+                    openSet.add(point)
+                }
+
+            }
+        })
+
+        updateMatrixDisplay(matrix);
+    } else {
+        console.log("solution could not be found")
+    }
+}
 
 function getNeighbors({x, y}){
     const neighbors = new Set();
@@ -107,7 +118,7 @@ function getNeighbors({x, y}){
 
 function getHeuristic (cell, end){
     //euclidian distance
-    // return Math.hypot(abs( end.x - cell.x ), abs( end.y - cell.y ))
+    // return Math.hypot(Math.abs( end.x - cell.x ), Math.abs( end.y - cell.y ))
 //=======================================================================
     // manhattam distance (no diagonal steps)
     return Math.abs(cell.x - end.x) + Math.abs(cell.y - end.y)
@@ -115,7 +126,7 @@ function getHeuristic (cell, end){
 
 function drawPath (path){
     path.forEach(point => {
-        matrix[point.y][point.x] = 'x'
+        matrix[point.y][point.x] = 'x';
     })
-    updateMatrixDisplay(matrix)
+    updateMatrixDisplay(matrix);
 }
