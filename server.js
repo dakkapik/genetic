@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const pathFinderTest = require("./pathFinderTest");
+const aStar = require("./methods/AStar")
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,13 +9,12 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/:historyLength', async (req, res) => {
-    const historyLength = req.params.historyLength;
+app.post('/matrix', async (req, res) => {
     const matrix = req.body;
 
-    const result = pathFinderTest(matrix, historyLength);
+    const result = aStar(matrix);
 
-    res.send(result);
+    res.send(JSON.stringify(result));
 })
 
 app.listen(PORT, () => console.log("app listenig", PORT))

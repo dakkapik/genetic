@@ -1,27 +1,29 @@
-// module.exports = function(matrix){
-const matrix = require("../testArray/hardArray.json")
-const startPoint = {x: 0, y: 0, steps: 0, f: 0}
-const endPoint = {x: matrix[0].length - 1,y: matrix.length - 1}
+const startPoint = {x: 0, y: 0, steps: 0, f: 0};
+const endPoint = {x: matrix[0].length - 1,y: matrix.length - 1};
 const path = [];
 
-const openSet = new Set()
+const openSet = new Set();
 openSet.add(startPoint)
-const closedSet = new Set()
+const closedSet = new Set();
 
 //// iterate through close and open set to display current search
-/*
-openSet.forEach(point=>{
-    //display opened points
-})
-
-closeSet.forEach(point=>{
-    //display closed points
-})
-*/
-
 while(openSet.size > 0){
+    
+    openSet.forEach(point=>{
+        matrix[point.y][point.x] = 'u' 
+        //display opened points
+    })
+    
+    closedSet.forEach(point=>{
+        // console.log(point)
+        matrix[point.y][point.x] = 'c' 
+        //display closed points
+    })
+    
+    // updateMatrixDisplay(matrix)
+
     let lowestF;
-    console.log(openSet)
+    // console.log(openSet)
     openSet.forEach(point => {
         if(lowestF){
             if(point.f < lowestF.f){
@@ -35,15 +37,14 @@ while(openSet.size > 0){
     let current = lowestF;
 
     if(current.x === endPoint.x && current.y === endPoint.y){
-        // console.log("END");
+        console.log("END");
         let temp = current
         path.push(temp)
         while(temp.previous){
             path.push(temp.previous)
             temp = temp.previous
         }
-        // return drawPath(path)
-        console.log(JSON.stringify(drawPath(path)))
+        drawPath(path)
         break;
     }
 
@@ -73,6 +74,7 @@ while(openSet.size > 0){
         }
     })
     closedSet.add(current);
+    updateMatrixDisplay(matrix);
 }
 
 
@@ -115,7 +117,5 @@ function drawPath (path){
     path.forEach(point => {
         matrix[point.y][point.x] = 'x'
     })
-    return matrix  
+    updateMatrixDisplay(matrix)
 }
-
-// }

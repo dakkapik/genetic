@@ -38,6 +38,30 @@
     border-radius: 50%;
 }
 
+.open {
+    z-index: 1;
+    background-color: green;
+    border-width: 0.1vh;
+    border-style: solid;
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+}
+
+.closed {
+    z-index: 1;
+    background-color: blue;
+    border-width: 0.1vh;
+    border-style: solid;
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+}
+
 .matrix > div {
     display: flex;
 }

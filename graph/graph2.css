@@ -1,0 +1,12 @@
+.matrix > div > div {
+    border: solid black 1px;
+    border-radius: 50%;
+}
+
+.matrix > div {
+    display: flex;
+}
+
+.obstacle {
+    background-color: black;
+}
