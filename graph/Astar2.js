@@ -1,139 +1,142 @@
-let startPoint;
-let endPoint;
-const path = [];
+const start = {x: 0, y: 0}
+const end = {x: matrix[0].length - 1, y: matrix.length - 1}
+const path = aStar(matrix, start, end, manhattamDistance)
+// console.log("PATH:",path)
+console.log(matrix)
+function aStar(matrix, start, goal, h){
+    
+    const rows = matrix.length;
+    const columns = matrix[0].length;
 
-const openSet = new Set();
-const closedSet = new Set();
+    const openSet = new MinHeap();
+    // const closedSet = new Set();
+    const map = new Array(rows);
 
-function setStart(x,y){
-    startPoint = new Point(x,y)
-}
+    for(let i = 0; i < rows; i++){
+        map[i] = new Array(columns)
+        for(let j = 0; j < columns; j++){
+            const point = new Point(j, i)
+            // add other letters here
+            if(matrix[i][j] === 'o'){
+                point.obstacle = true;
+            } 
+            map[i][j] = point;
+        }
+    }
+    map[start.y][start.x].g = 0
+    map[start.y][start.x].f = h(start, goal)
 
-function setEnd(x,y){
-    endPoint = new Point(x,y)
-}
+    openSet.insert(map[start.y][start.x])
+    updateMatrixByPoint(start, 'u')
 
-class Point {
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-        this.g = 0;
-        this.h = 0;
-        this.f = 0;
-        this.previous = undefined;
+    while(openSet.getMin()){
+        const current = openSet.getMin();
+
+        if(current.x === goal.x && current.y === goal.y){
+            //promise based return
+            // console.log("done map:",map)
+            return buildPath(current)
+        }
+
+        openSet.removeSmallest();
+
+        const neighbors = getNeighbors(current) 
+
+        for(let i = 0; i < neighbors.length; i++){
+            const currentNeighbor = neighbors[i]
+            const temptingGScore = current.g + 1;
+
+            if(temptingGScore < currentNeighbor.g){
+                map[currentNeighbor.y][currentNeighbor.x].cameFrom = {x: current.x, y: current.y};
+                map[currentNeighbor.y][currentNeighbor.x].g = temptingGScore;
+                map[currentNeighbor.y][currentNeighbor.x].f = temptingGScore + h(currentNeighbor, goal)
+                if(!openSet.has(currentNeighbor)){
+                    openSet.insert(currentNeighbor)
+                    updateMatrixByPoint(current, 'u')
+                }
+
+            }
+            
+        }
+        updateMatrixByPoint(current, 'c');
     }
 
-    getHeuristic(){
-        //euclidian distance
-        // return Math.hypot( endPoint.x - this.x , endPoint.y - this.y )
-    //=======================================================================
-        // manhattam distance (no diagonal steps)
-        return Math.abs(this.x - endPoint.x) + Math.abs(this.y - endPoint.y)
+    // const interval = setInterval(()=>{
+    //     const current = openSet.getMin();
+
+    //     if(current.x === goal.x && current.y === goal.y){
+    //         //promise based return
+    //         // console.log("done map:",map)
+    //         clearInterval(interval)
+    //         return buildPath(current)
+    //     }
+
+    //     openSet.removeSmallest();
+
+    //     const neighbors = getNeighbors(current) 
+
+    //     for(let i = 0; i < neighbors.length; i++){
+    //         const currentNeighbor = neighbors[i]
+    //         const temptingGScore = current.g + 1;
+
+    //         if(temptingGScore < currentNeighbor.g){
+    //             map[currentNeighbor.y][currentNeighbor.x].cameFrom = {x: current.x, y: current.y};
+    //             map[currentNeighbor.y][currentNeighbor.x].g = temptingGScore;
+    //             map[currentNeighbor.y][currentNeighbor.x].f = temptingGScore + h(currentNeighbor, goal)
+    //             if(!openSet.has(currentNeighbor)){
+    //                 openSet.insert(currentNeighbor)
+    //                 updateMatrixByPoint(current, 'u')
+    //             }
+
+    //         }
+            
+    //     }
+    //     updateMatrixByPoint(current, 'c');
+    // }, 10)
+
+
+    //async undefined if no result
+    return undefined;
+
+    function buildPath( current ){
+        const path = [current];
+        while (current.cameFrom){
+            updateMatrixByPoint(current, 'x')
+            current = map[current.cameFrom.y][current.cameFrom.x]
+            path.push(current)
+        }
+        return path
     }
 
-    getNeighbors(){
-        const x = this.x;
-        const y = this.y;
-        const neighbors = new Set();
-        const isValidNeighbor = (x, y) =>{
-            return (
-                x >= 0 &&
-                x < matrix[0].length &&
-                y >= 0 &&
-                y < matrix.length &&
-                matrix[y][x] !== 'o'
-            )
+    function getNeighbors({x, y}){
+        // maybe make obstacles infinite distance?
+        const neighbors = [];
+        // obstacle or clean?
+        if(x - 1 > 0){
+            if( !map[y][x - 1].obstacle) neighbors.push(map[y][x - 1])
+        } 
+        if(x + 1 < columns){
+            if(!map[y][x + 1].obstacle) neighbors.push(map[y][x + 1])
         }
-        if(isValidNeighbor(x - 1, y)){
-            neighbors.add(new Point(x - 1, y))
+        if(y - 1 > 0){
+            if(!map[y - 1][x].obstacle) neighbors.push(map[y - 1][x])
         }
-        if(isValidNeighbor(x + 1, y)){
-            neighbors.add(new Point(x + 1, y))
-        }
-        if(isValidNeighbor(x, y - 1)){
-            neighbors.add(new Point(x, y - 1))
-        }
-        if(isValidNeighbor(x, y + 1)){
-            neighbors.add(new Point(x, y + 1))
+        if(y + 1 < rows){
+            if(!map[y + 1][x].obstacle) neighbors.push(map[y + 1][x])
         }
         return neighbors;
     }
 }
 
-setStart(0,0)
-setEnd(28,28)
-// setInterval(run, 100)
+function updateMatrixByPoint(point, state){
+    matrix[point.y][point.x] = state
+    updateMatrixDisplay(matrix)
+}
 
-// CREATE NEW MATRIX ABSTRACT WITH ALL VALUES ALREADY IN IT
+function euclidianDistance (current, goal){
+    return Math.hypot(Math.abs( current.x - goal.x ), Math.abs( current.y - goal.y ))
+}
 
-function run(){
-    openSet.add(startPoint)
-    let lowestF;
-    if(openSet.size > 0){
-
-        openSet.forEach(point => {
-            if(lowestF){
-                if(point.f < lowestF.f){
-                    lowestF = point;
-                }
-            } else {
-                lowestF = point;
-            }
-        })
-
-        let current = lowestF;   
-
-        if(current.x === endPoint.x && current.y === endPoint.y){
-            console.log("END");
-            let temp = current
-            path.push(temp)
-            while(temp.previous){
-                path.push(temp.previous)
-                temp = temp.previous
-            }
-            drawPath(path)
-            clearInterval(interval)
-        }
-
-        openSet.delete(current);
-        closedSet.add(current);
-        
-        openSet.forEach(point=>{
-            matrix[point.y][point.x] = 'u' 
-            //display opened points
-        })
-        
-        closedSet.forEach(point=>{
-            matrix[point.y][point.x] = 'c' 
-            //display closed points
-        })
-
-        current.getNeighbors().forEach(point=>{
-            if(!closedSet.has(point)){
-                const tempSteps = current.g + 1
-                if(openSet.has(point)){
-                    oldScore = openSet.values(point)
-                    if(tempSteps < oldScore.g){
-                        const betterPathPoint = point
-                        betterPathPoint.g = tempSteps
-                        betterPathPoint.previous = current
-
-                        openSet.add(betterPathPoint)
-                        openSet.delete(point)
-                    }
-                } else {
-                    console.log(point)
-                    point.g = tempSteps
-                    point.f = point.getHeuristic() + point.steps
-                    point.previous = current
-                    openSet.add(point)
-                }
-
-            }
-        })
-
-        updateMatrixDisplay(matrix);
-    } else {
-        console.log("solution could not be found")
-    }
+function manhattamDistance(current, goal){
+    return Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y)
 }

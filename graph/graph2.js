@@ -3,8 +3,8 @@ const GRAPH_WIDTH = 800;
 const GRAPH_HEIGHT = 800;
 let columns = 28;
 let rows = 28;
-let obstacleRatio = 0.2
-let matrix = generateMatrixObstract(obstacleRatio)
+let obstacleRatio = 0.2;
+let matrix = generateMatrixObstract(obstacleRatio);
 updateMatrixDisplay(matrix);
 
 
@@ -25,10 +25,6 @@ updateMatrixDisplay(matrix);
 //     }
 //     updateMatrixValues();
 //     updateMatrixDisplay();
-// }
-
-// const updateMatrix = () => {
-
 // }
 
 // const importMatrix = ( matrix ) => {
@@ -55,10 +51,6 @@ function generateMatrixObstract ( obstaclesRatio ) {
     }
     return newMatrix;
 }
-
-// function updateDisplay () {
-
-// }
 
 function removeChilds (parent) {
     while (parent.lastChild) {
