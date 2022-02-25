@@ -1,9 +1,8 @@
 const start = {x: 0, y: 0}
 const end = {x: matrix[0].length - 1, y: matrix.length - 1}
-const path = aStar(matrix, start, end, manhattamDistance)
-// console.log("PATH:",path)
-console.log(matrix)
-function aStar(matrix, start, goal, h){
+const path = AStar(matrix, start, end, manhattamDistance)
+
+function AStar(matrix, start, goal, h){
     
     const rows = matrix.length;
     const columns = matrix[0].length;
@@ -60,41 +59,6 @@ function aStar(matrix, start, goal, h){
         }
         updateMatrixByPoint(current, 'c');
     }
-
-    // const interval = setInterval(()=>{
-    //     const current = openSet.getMin();
-
-    //     if(current.x === goal.x && current.y === goal.y){
-    //         //promise based return
-    //         // console.log("done map:",map)
-    //         clearInterval(interval)
-    //         return buildPath(current)
-    //     }
-
-    //     openSet.removeSmallest();
-
-    //     const neighbors = getNeighbors(current) 
-
-    //     for(let i = 0; i < neighbors.length; i++){
-    //         const currentNeighbor = neighbors[i]
-    //         const temptingGScore = current.g + 1;
-
-    //         if(temptingGScore < currentNeighbor.g){
-    //             map[currentNeighbor.y][currentNeighbor.x].cameFrom = {x: current.x, y: current.y};
-    //             map[currentNeighbor.y][currentNeighbor.x].g = temptingGScore;
-    //             map[currentNeighbor.y][currentNeighbor.x].f = temptingGScore + h(currentNeighbor, goal)
-    //             if(!openSet.has(currentNeighbor)){
-    //                 openSet.insert(currentNeighbor)
-    //                 updateMatrixByPoint(current, 'u')
-    //             }
-
-    //         }
-            
-    //     }
-    //     updateMatrixByPoint(current, 'c');
-    // }, 10)
-
-
     //async undefined if no result
     return undefined;
 
