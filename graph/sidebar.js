@@ -10,15 +10,16 @@ const historyValue = document.getElementById("history-value");
 iterarionInput.value = historyLength;
 historySlider.max = historyLength;
 
-const widthUpButton = document.getElementById("width-up-button");
-const widthDownButton = document.getElementById("width-down-button");
-const heightUpButton = document.getElementById("heigth-up-button");
-const heightDownButton = document.getElementById("heigth-down-button");
+const columnsUpButton = document.getElementById("columns-up-button");
+const columnsDownButton = document.getElementById("columns-down-button");
+const rowsUpButton = document.getElementById("rows-up-button");
+const rowsDownButton = document.getElementById("rows-down-button");
+updateSidebarValues();
 
-widthUpButton.addEventListener("click", updateMatrixDimensions);
-widthDownButton.addEventListener("click", updateMatrixDimensions);
-heightUpButton.addEventListener("click", updateMatrixDimensions);
-heightDownButton.addEventListener("click", updateMatrixDimensions);
+columnsUpButton.addEventListener("click", updateMatrixDimensions);
+columnsDownButton.addEventListener("click", updateMatrixDimensions);
+rowsUpButton.addEventListener("click", updateMatrixDimensions);
+rowsDownButton.addEventListener("click", updateMatrixDimensions);
 
 getMatrixButton.onclick = getMatrix;
 postMatrixButton.onclick = postMatrix; 
@@ -63,3 +64,52 @@ historySlider.oninput = function() {
     }
     historyValue.innerHTML = this.value;
 }
+
+function updateMatrixDimensions (e) {
+    const [ dimension, sign ] = e.path[0].id.split('-');
+    if(dimension === "columns"){
+        if(sign === "up"){
+            columns ++;
+        } else {
+            columns --;
+        }
+    } else {
+        if(sign === "up"){
+            rows ++;
+        } else {
+            rows --;
+        }
+    }
+  updateSidebarValues();
+  matrix = updateMatrixDisplay(updateMatrixValues(matrix));
+}
+
+function updateMatrixValues ( matrix ) {
+  const newMatrix = new Array(rows)
+  for(let i = 0; i < rows; i++){
+      const c = new Array(columns)
+        newMatrix[i] = c
+        for(let j = 0; j < columns; j++){
+          if(matrix[i]){
+            if(matrix[i][j] === 'o'){
+              newMatrix[i][j] = 'o'
+            } else {
+              newMatrix[i][j] = '-'
+            } 
+          } else {
+            newMatrix[i][j] = '-'
+          }
+        }
+    }
+    return newMatrix;
+}
+
+function updateSidebarValues (){
+  document.getElementById("columns-display").innerHTML = columns
+  document.getElementById("rows-display").innerHTML = rows
+}
+
+// const importMatrix = ( matrix ) => {
+//     columns = matrix[0].length
+//     rows = matrix.length
+// }

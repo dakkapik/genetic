@@ -1,7 +1,3 @@
-const start = {x: 0, y: 0}
-const end = {x: matrix[0].length - 1, y: matrix.length - 1}
-const path = AStar(matrix, start, end, manhattamDistance)
-
 function AStar(grid, start, goal, h){
     
     const rows = grid.length;
@@ -93,15 +89,15 @@ function AStar(grid, start, goal, h){
     }
 }
 
-function updateMatrixByPoint(point, state){
-    matrix[point.y][point.x] = state
-    updateMatrixDisplay(matrix)
-}
+// function updateMatrixByPoint(point, state){
+//     matrix[point.y][point.x] = state
+//     updateMatrixDisplay(matrix)
+// }
 
-function euclidianDistance (current, goal){
-    return Math.hypot(Math.abs( current.x - goal.x ), Math.abs( current.y - goal.y ))
-}
+// function euclidianDistance (current, goal){
+//     return Math.hypot(Math.abs( current.x - goal.x ), Math.abs( current.y - goal.y ))
+// }
 
-function manhattamDistance(current, goal){
-    return Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y)
-}
+// function manhattamDistance(current, goal){
+//     return Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y)
+// }
