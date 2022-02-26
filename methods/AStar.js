@@ -1,121 +1,86 @@
-// module.exports = function(matrix){
-const matrix = require("../testArray/hardArray.json")
-const startPoint = {x: 0, y: 0, steps: 0, f: 0}
-const endPoint = {x: matrix[0].length - 1,y: matrix.length - 1}
-const path = [];
+module.exports = function (grid, start, goal, h){  
+    const { Point, MinHeap } = require("./AstarClases")
 
-const openSet = new Set()
-openSet.add(startPoint)
-const closedSet = new Set()
+    const rows = grid.length;
+    const columns = grid[0].length;
 
-//// iterate through close and open set to display current search
-/*
-openSet.forEach(point=>{
-    //display opened points
-})
+    const openSet = new MinHeap();
 
-closeSet.forEach(point=>{
-    //display closed points
-})
-*/
+    const map = new Array(rows);
 
-while(openSet.size > 0){
-    let lowestF;
-    console.log(openSet)
-    openSet.forEach(point => {
-        if(lowestF){
-            if(point.f < lowestF.f){
-                lowestF = point;
-            }
-        } else {
-            lowestF = point;
+    for(let i = 0; i < rows; i++){
+        map[i] = new Array(columns)
+        for(let j = 0; j < columns; j++){
+            const point = new Point(j, i)
+            // add other letters here
+            if(grid[i][j] === 'o'){
+                point.obstacle = true;
+            } 
+            map[i][j] = point;
         }
-    })
-
-    let current = lowestF;
-
-    if(current.x === endPoint.x && current.y === endPoint.y){
-        // console.log("END");
-        let temp = current
-        path.push(temp)
-        while(temp.previous){
-            path.push(temp.previous)
-            temp = temp.previous
-        }
-        // return drawPath(path)
-        console.log(JSON.stringify(drawPath(path)))
-        break;
     }
+    map[start.y][start.x].g = 0
+    map[start.y][start.x].f = h(start, goal)
 
-    openSet.delete(current);
+    openSet.insert(map[start.y][start.x])
 
-    getNeighbors(current).forEach(point=>{
+    while(openSet.getMin()){
+        const current = openSet.getMin();
 
-        if(!closedSet.has(point)){
-            const tempSteps = current.steps + 1
-            if(openSet.has(point)){
-                oldScore = openSet.values(point)
-                if(tempSteps < oldScore.steps){
-                    const betterPathPoint = point
-                    betterPathPoint.steps = tempSteps
-                    betterPathPoint.previous = current
+        if(current.x === goal.x && current.y === goal.y){
+            //promise based return
+            // console.log("done map:",map)
+            return buildPath(current)
+        }
 
-                    openSet.add(betterPathPoint)
-                    openSet.delete(point)
+        openSet.removeSmallest();
+
+        const neighbors = getNeighbors(current) 
+
+        for(let i = 0; i < neighbors.length; i++){
+            const currentNeighbor = neighbors[i]
+            const temptingGScore = current.g + 1;
+
+            if(temptingGScore < currentNeighbor.g){
+                map[currentNeighbor.y][currentNeighbor.x].cameFrom = {x: current.x, y: current.y};
+                map[currentNeighbor.y][currentNeighbor.x].g = temptingGScore;
+                map[currentNeighbor.y][currentNeighbor.x].f = temptingGScore + h(currentNeighbor, goal)
+                if(!openSet.has(currentNeighbor)){
+                    openSet.insert(currentNeighbor)
                 }
-            } else {
-                point.steps = tempSteps
-                point.f = getHeuristic(point, endPoint)
-                point.previous = current
-                openSet.add(point)
+
             }
-
+            
         }
-    })
-    closedSet.add(current);
+    }
+    //async undefined if no result
+    return undefined;
+
+    function buildPath( current ){
+        const path = [current];
+        while (current.cameFrom){
+            current = map[current.cameFrom.y][current.cameFrom.x]
+            path.push(current)
+        }
+        return path
+    }
+
+    function getNeighbors({x, y}){
+        // maybe make obstacles infinite distance?
+        const neighbors = [];
+        // obstacle or clean?
+        if(x - 1 > 0){
+            if( !map[y][x - 1].obstacle) neighbors.push(map[y][x - 1])
+        } 
+        if(x + 1 < columns){
+            if(!map[y][x + 1].obstacle) neighbors.push(map[y][x + 1])
+        }
+        if(y - 1 > 0){
+            if(!map[y - 1][x].obstacle) neighbors.push(map[y - 1][x])
+        }
+        if(y + 1 < rows){
+            if(!map[y + 1][x].obstacle) neighbors.push(map[y + 1][x])
+        }
+        return neighbors;
+    }
 }
-
-
-function getNeighbors({x, y}){
-    const neighbors = new Set();
-    const isValidNeighbor = (x, y) =>{
-        return (
-            x >= 0 &&
-            x < matrix[0].length &&
-            y >= 0 &&
-            y < matrix.length &&
-            matrix[y][x] !== 'o'
-        )
-    }
-    if(isValidNeighbor(x - 1, y)){
-        neighbors.add({x: x - 1, y})
-    }
-    if(isValidNeighbor(x + 1, y)){
-        neighbors.add({x: x + 1, y})
-    }
-    if(isValidNeighbor(x, y - 1)){
-        neighbors.add({x, y: y - 1})
-    }
-    if(isValidNeighbor(x, y + 1)){
-        neighbors.add({x, y: y + 1})
-    }
-    return neighbors;
-}
-
-
-function getHeuristic (cell, end){
-    //euclidian distance
-    // return Math.hypot(abs( end.x - cell.x ), abs( end.y - cell.y ))
-//=======================================================================
-    // manhattam distance (no diagonal steps)
-    return Math.abs(cell.x - end.x) + Math.abs(cell.y - end.y)
-}
-
-function drawPath (path){
-    path.forEach(point => {
-        matrix[point.y][point.x] = 'x'
-    })
-    return matrix  
-}
-
-// }

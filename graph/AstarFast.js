@@ -2,13 +2,13 @@ const start = {x: 0, y: 0}
 const end = {x: matrix[0].length - 1, y: matrix.length - 1}
 const path = AStar(matrix, start, end, manhattamDistance)
 
-function AStar(matrix, start, goal, h){
+function AStar(grid, start, goal, h){
     
-    const rows = matrix.length;
-    const columns = matrix[0].length;
+    const rows = grid.length;
+    const columns = grid[0].length;
 
     const openSet = new MinHeap();
-    // const closedSet = new Set();
+
     const map = new Array(rows);
 
     for(let i = 0; i < rows; i++){
@@ -16,7 +16,7 @@ function AStar(matrix, start, goal, h){
         for(let j = 0; j < columns; j++){
             const point = new Point(j, i)
             // add other letters here
-            if(matrix[i][j] === 'o'){
+            if(grid[i][j] === 'o'){
                 point.obstacle = true;
             } 
             map[i][j] = point;
@@ -26,7 +26,7 @@ function AStar(matrix, start, goal, h){
     map[start.y][start.x].f = h(start, goal)
 
     openSet.insert(map[start.y][start.x])
-    updateMatrixByPoint(start, 'u')
+    matrix[current.y][current.x] = 'u'
 
     while(openSet.getMin()){
         const current = openSet.getMin();
@@ -34,6 +34,7 @@ function AStar(matrix, start, goal, h){
         if(current.x === goal.x && current.y === goal.y){
             //promise based return
             // console.log("done map:",map)
+            updateMatrixDisplay(matrix)
             return buildPath(current)
         }
 
@@ -51,13 +52,13 @@ function AStar(matrix, start, goal, h){
                 map[currentNeighbor.y][currentNeighbor.x].f = temptingGScore + h(currentNeighbor, goal)
                 if(!openSet.has(currentNeighbor)){
                     openSet.insert(currentNeighbor)
-                    updateMatrixByPoint(current, 'u')
+                    matrix[current.y][current.x] = 'u';
                 }
 
             }
             
         }
-        updateMatrixByPoint(current, 'c');
+        matrix[current.y][current.x] = 'c';
     }
     //async undefined if no result
     return undefined;
@@ -65,7 +66,7 @@ function AStar(matrix, start, goal, h){
     function buildPath( current ){
         const path = [current];
         while (current.cameFrom){
-            updateMatrixByPoint(current, 'x')
+            matrix[current.y][current.x] = 'x'
             current = map[current.cameFrom.y][current.cameFrom.x]
             path.push(current)
         }

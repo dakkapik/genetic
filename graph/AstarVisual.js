@@ -1,7 +1,3 @@
-const start = {x: 0, y: 0}
-const end = {x: matrix[0].length - 1, y: matrix.length - 1}
-const path = visualAStar(matrix, start, end, manhattamDistance)
-
 function visualAStar(matrix, start, goal, h){
     
     const rows = matrix.length;
@@ -70,7 +66,6 @@ function visualAStar(matrix, start, goal, h){
     function buildPath( current ){
         const path = [current];
         while (current.cameFrom){
-            updateMatrixByPoint(current, 'x')
             current = map[current.cameFrom.y][current.cameFrom.x]
             path.push(current)
         }
