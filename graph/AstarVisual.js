@@ -1,5 +1,6 @@
 
 document.getElementById("run-astar-visual-button")
+// .addEventListener("click", () => visualAStar(matrix, {x:0,y:0}, {x: matrix[0].length - 1, y: matrix.length - 1}, euclidianDistance))
 .addEventListener("click", () => visualAStar(matrix, {x:0,y:0}, {x: matrix[0].length - 1, y: matrix.length - 1}, manhattamDistance))
 
 function visualAStar(matrix, start, goal, h){
@@ -34,6 +35,7 @@ function visualAStar(matrix, start, goal, h){
         const current = openSet.getMin();
         if(!current){
             clearInterval(interval)
+            console.log("NO ROUTE FOUND")
             return undefined
         }
         
@@ -47,7 +49,6 @@ function visualAStar(matrix, start, goal, h){
         openSet.removeSmallest();
 
         const neighbors = getNeighbors(current) 
-
         for(let i = 0; i < neighbors.length; i++){
             const currentNeighbor = neighbors[i]
             const temptingGScore = current.g + 1;
@@ -82,18 +83,42 @@ function visualAStar(matrix, start, goal, h){
         // maybe make obstacles infinite distance?
         const neighbors = [];
         // obstacle or clean?
-        if(x - 1 > 0){
-            if( !map[y][x - 1].obstacle) neighbors.push(map[y][x - 1])
+        if(x - 1 >= 0){
+            if( !map[y][x - 1].obstacle) {
+                neighbors.push(map[y][x - 1])
+                // updateMatrixByPoint({x: x - 1, y}, 'n')
+            }
         } 
         if(x + 1 < columns){
-            if(!map[y][x + 1].obstacle) neighbors.push(map[y][x + 1])
+            if(!map[y][x + 1].obstacle){
+                neighbors.push(map[y][x + 1])
+                // updateMatrixByPoint({x: x + 1, y}, 'n')
+            } 
         }
-        if(y - 1 > 0){
-            if(!map[y - 1][x].obstacle) neighbors.push(map[y - 1][x])
+        if(y - 1 >= 0){
+            if(!map[y - 1][x].obstacle) {
+                neighbors.push(map[y - 1][x])
+                // updateMatrixByPoint({x, y: y - 1}, 'n')
+            }
         }
         if(y + 1 < rows){
-            if(!map[y + 1][x].obstacle) neighbors.push(map[y + 1][x])
+            if(!map[y + 1][x].obstacle) {
+                neighbors.push(map[y + 1][x])
+                // updateMatrixByPoint({x, y: + 1}, 'n')
+            }
         }
+        // if(x + 1 < rows && y - 1 > 0){
+        //     if(!map[y - 1][x + 1].obstacle) neighbors.push(map[y - 1][x + 1])
+        // }
+        // if(x - 1 > 0 && y - 1 > 0){
+        //     if(!map[y - 1][x - 1].obstacle) neighbors.push(map[y - 1][x - 1])
+        // }
+        // if(x - 1 > 0 && y + 1 < columns){
+        //     if(!map[y + 1][x - 1].obstacle) neighbors.push(map[y + 1][x - 1])
+        // }
+        // if(x + 1 < rows && y + 1 < columns){
+        //     if(!map[y + 1][x + 1].obstacle) neighbors.push(map[y + 1][x + 1])
+        // }
         return neighbors;
     }
 }

@@ -73,13 +73,13 @@ function AStar(grid, start, goal, h){
         // maybe make obstacles infinite distance?
         const neighbors = [];
         // obstacle or clean?
-        if(x - 1 > 0){
+        if(x - 1 >= 0){
             if( !map[y][x - 1].obstacle) neighbors.push(map[y][x - 1])
         } 
         if(x + 1 < columns){
             if(!map[y][x + 1].obstacle) neighbors.push(map[y][x + 1])
         }
-        if(y - 1 > 0){
+        if(y - 1 >= 0){
             if(!map[y - 1][x].obstacle) neighbors.push(map[y - 1][x])
         }
         if(y + 1 < rows){
