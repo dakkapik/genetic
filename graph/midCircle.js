@@ -1,7 +1,8 @@
-const grid = require("../testArray/cleanArray.json")
-const circle = midPointCircle({x:0,y:0}, 4)
-const validCircleValues = validMidPointCircle(grid, circle)
-console.log(validCircleValues)
+const circle = validMidPointCircle(matrix, midPointCircle({x:10,y:10}, 5))
+
+circle.forEach(element => {
+    document.getElementById(`${element.x}-${element.y}`).style.backgroundColor = "green" 
+});
 
 function midPointCircle(position, radius){
     const circle =[];
