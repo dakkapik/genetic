@@ -1,6 +1,9 @@
 .matrix > div > div {
     border: solid black 1px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .matrix > div {
