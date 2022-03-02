@@ -7,7 +7,9 @@ class Point{
         // this.h = 0;
         this.obstacle = false;
         this.cameFrom = undefined;
-
+        this.overlap = false;
+        this.name = undefined;
+        // this.cameFromDirection = undefined;
         // add clean?
     }
 }
