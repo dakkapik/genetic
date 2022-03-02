@@ -9,6 +9,7 @@ const { manhattamDistance } = require("./methods/heuristic")
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static('public'))
 
 app.post('/matrix', async (req, res) => {
     const matrix = req.body;

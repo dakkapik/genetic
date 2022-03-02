@@ -1,8 +1,3 @@
-const grid = require("../testArray/cleanArray.json")
-const circle = midPointCircle({x:0,y:0}, 4)
-const validCircleValues = validMidPointCircle(grid, circle)
-console.log(validCircleValues)
-
 function midPointCircle(position, radius){
     const circle =[];
     let x = radius;
@@ -57,3 +52,6 @@ function validMidPointCircle (matrix, circleValues) {
         matrix[position.y][position.x] !== 'x'
     ))
 }
+
+module.exports.validMidPointCircle = validMidPointCircle;
+module.exports.midPointCircle = midPointCircle;

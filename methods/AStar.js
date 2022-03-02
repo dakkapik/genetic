@@ -1,4 +1,6 @@
 module.exports = function (grid, start, goal, h){  
+    return new Promise ((resolve, reject) => {
+        
     const { Point, MinHeap } = require("./AstarClases")
 
     const rows = grid.length;
@@ -16,6 +18,9 @@ module.exports = function (grid, start, goal, h){
             if(grid[i][j] === 'o'){
                 point.obstacle = true;
             } 
+            if(grid[i][j] === 'x'){
+                point.obstacle = true
+            }
             map[i][j] = point;
         }
     }
@@ -26,11 +31,8 @@ module.exports = function (grid, start, goal, h){
 
     while(openSet.getMin()){
         const current = openSet.getMin();
-
         if(current.x === goal.x && current.y === goal.y){
-            //promise based return
-            // console.log("done map:",map)
-            return buildPath(current)
+            resolve(buildPath(current))
         }
 
         openSet.removeSmallest();
@@ -54,7 +56,7 @@ module.exports = function (grid, start, goal, h){
         }
     }
     //async undefined if no result
-    return undefined;
+    reject(new Error('path not found'))
 
     function buildPath( current ){
         const path = [current];
@@ -83,4 +85,5 @@ module.exports = function (grid, start, goal, h){
         }
         return neighbors;
     }
+    })
 }
