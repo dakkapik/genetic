@@ -27,9 +27,9 @@ setIterationsButton.onclick = updateHistorySlide;
 
 function postMatrix() {
 
-    const port = "3000";
-    const host = "localhost";
-    const requestString = "http://" + host + ':' + port + "/matrix";
+    const PORT = "3000";
+    const HOST = "localhost";
+    const requestString = "http://" + HOST + ':' + PORT + "/matrix";
     const stringifiedArray = JSON.stringify(matrix);
 
     fetch(requestString , {
@@ -39,8 +39,7 @@ function postMatrix() {
       },
       body: stringifiedArray,
     })
-    .then(response => response.json())
-    .then(data => { generateMatrix(data)})
+    .then(response => console.log(response.code))
     .catch((error) => {
       console.error('Error:', error);
     });

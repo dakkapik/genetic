@@ -5,6 +5,7 @@ const aStar = require("./methods/AStar")
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { manhattamDistance } = require("./methods/heuristic")
+const { createWriteStream, readdirSync} = require("fs")
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,12 +14,18 @@ app.use(express.static('public'))
 
 app.post('/matrix', async (req, res) => {
     const matrix = req.body;
-    const start = {x: 0, y: 0}
-    const end = {x: matrix[0].length - 1, y: matrix.length - 1}
 
-    const result = aStar(matrix, start, end, manhattamDistance);
+    const testArrayNum = readdirSync('./testArray').length
+    console.log(matrix)
+    const stream = createWriteStream(`./testArray/matrix${testArrayNum + 1}.json`);
 
-    res.send(JSON.stringify(result));
+    stream.write('[\n')
+    matrix.forEach(row => {
+        stream.write(JSON.stringify(row) + ',\n')
+    });
+    stream.write(']')
+
+    stream.end(() => res.status(200))
 })
 
 app.get('/', async (req, res) => {
