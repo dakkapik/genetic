@@ -1,4 +1,12 @@
-module.exports = function (grid, start, goal, h){  
+function codify (err, code) {
+    err.code = code
+    return err
+}
+
+module.exports = function (grid, start, goal, h, overlapAllowed = false){  
+
+    const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
+
     return new Promise ((resolve, reject) => {
         
     const { Point, MinHeap } = require("./AstarClases")
@@ -15,12 +23,14 @@ module.exports = function (grid, start, goal, h){
         for(let j = 0; j < columns; j++){
             const point = new Point(j, i)
             // add other letters here
+            point.name = i * rows + j
             if(grid[i][j] === 'o'){
                 point.obstacle = true;
             } 
-            if(grid[i][j] === 'x'){
-                point.obstacle = true
+            if(!overlapAllowed){
+                if(grid[i][j] === 'x') point.obstacle = true
             }
+            
             map[i][j] = point;
         }
     }
@@ -55,15 +65,25 @@ module.exports = function (grid, start, goal, h){
             
         }
     }
-    //async undefined if no result
-    reject(new Error('path not found'))
 
-    function buildPath( current ){
-        const path = [current];
-        while (current.cameFrom){
-            current = map[current.cameFrom.y][current.cameFrom.x]
-            path.push(current)
-        }
+    //resolve string if path not found
+    if(!overlapAllowed){
+        resolve(PATH_NOT_FOUND[0])
+    } else {
+        //reject here?
+        resolve(PATH_NOT_FOUND[1])
+    }   
+
+    function buildPath( start ){
+        const path = [start];
+        let point = start;
+        do {
+            point = map[point.cameFrom.y][point.cameFrom.x]
+            if(grid[point.y][point.x] === 'x' && point.x !== start.x && point.y !== start.y) point.overlap = true
+
+            path.push(point)
+        } while (point.cameFrom)
+
         return path
     }
 
