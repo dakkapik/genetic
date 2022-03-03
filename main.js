@@ -4,16 +4,25 @@ const { manhattamDistance, euclidianDistance } = require("./methods/heuristic")
 const { createWriteStream, writeFile, readdirSync} = require("fs")
 
 const TEST_ARRAY_DIR = './public/testArray';
+const matrix = require(`./public/testArray/matrix_${readdirSync(TEST_ARRAY_DIR).length}.json`)
+
 const SENSOR_RANGE = 5;
-const STARTING_POSITION = {x: 0, y: 0}
+const STARTING_POSITION = {x: 0, y: 0};
 // const END_POSITION = {}
 // add end position?
 const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
 
+let greatestDimension;
+
+if(matrix.length > matrix[0].length){
+    greatestDimension = matrix.length
+} else {
+    greatestDimension = matrix[0].length
+} 
+
 const dirtyCells = new Set()
 const inaccessible = [];
 
-const matrix = require(`./public/testArray/matrix_${readdirSync(TEST_ARRAY_DIR).length}.json`)
 
 
 for(let i = 0; i < matrix.length; i ++){
@@ -32,16 +41,26 @@ const main = async _ => {
             let examineInnerRange = true;
             let scanedValues;
             let scanAttempts = 0;
+
             //if no scaned values, gotta change this
             do {
                 if(examineInnerRange){
                     scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, SENSOR_RANGE - scanAttempts))
-                    if(scanAttempts === SENSOR_RANGE - 1) examineInnerRange = false
+                    if(scanAttempts === SENSOR_RANGE) examineInnerRange = false
                 } else {
-                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, scanAttempts + 1))
+                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, scanAttempts))
+                    //add <scanAttempts - 1> for more frecuent error
                 }
                 scanAttempts ++;
-            } while (scanedValues.length === 0)
+
+                if(scanAttempts > greatestDimension) console.log(scanAttempts)
+            } while (scanedValues.length === 0 && scanAttempts < greatestDimension)
+            
+            //why does mid point circle fail??
+            //fails with a small set of numbers
+            // can't find them? //declared as something else?
+            if(scanedValues.length === 0) throw codify("mid point circle failed", "MID_POINT_CIRCLE_FAIL") 
+            // add something to check scaned values? 
 
             const randomSelector = Math.round(Math.random() * (scanedValues.length - 1))
             const randomHeading = scanedValues[randomSelector]
@@ -57,7 +76,6 @@ const main = async _ => {
             if(miniPath === PATH_NOT_FOUND[0]) miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance, true)
 
             if (miniPath === PATH_NOT_FOUND[1]){
-                console.log(PATH_NOT_FOUND[1], currentPosition)
                 matrix[randomHeading.y][randomHeading.x] = 'k';
                 cellNumber = (matrix.length * randomHeading.y) + randomHeading.x;
                 dirtyCells.delete(cellNumber);
