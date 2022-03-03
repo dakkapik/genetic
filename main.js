@@ -1,17 +1,20 @@
 const Astar = require("./methods/AStar")
 const { midPointCircle, validMidPointCircle } = require("./methods/midPointCircle")
 const { manhattamDistance, euclidianDistance } = require("./methods/heuristic")
-const { createWriteStream, writeFile } = require("fs")
+const { createWriteStream, writeFile, readdirSync} = require("fs")
 
-const matrix = require("./public/testArray/matrix_9.json")
-
+const TEST_ARRAY_DIR = './public/testArray';
 const SENSOR_RANGE = 5;
 const STARTING_POSITION = {x: 0, y: 0}
 // const END_POSITION = {}
 // add end position?
 const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
+
 const dirtyCells = new Set()
 const inaccessible = [];
+
+const matrix = require(`./public/testArray/matrix_${readdirSync(TEST_ARRAY_DIR).length}.json`)
+
 
 for(let i = 0; i < matrix.length; i ++){
     for(let j = 0; j < matrix[0].length; j++){
