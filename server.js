@@ -16,6 +16,10 @@ app.post('/matrix', async (req, res) => {
     const matrix = req.body;
     const TEST_ARRAY_DIR = './public/testArray';
 
+    if (!existsSync('./public')){
+        mkdirSync('./public');
+    }
+
     if (!existsSync(TEST_ARRAY_DIR)){
         mkdirSync(TEST_ARRAY_DIR);
     }

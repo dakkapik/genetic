@@ -1,14 +1,7 @@
-function codify (err, code) {
-    err.code = code
-    return err
-}
-
 module.exports = function (grid, start, goal, h, overlapAllowed = false){  
-
-    const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
-
     return new Promise ((resolve, reject) => {
         
+    const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
     const { Point, MinHeap } = require("./AstarClases")
 
     const rows = grid.length;
@@ -24,13 +17,8 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
             const point = new Point(j, i)
             // add other letters here
             point.name = i * rows + j
-            if(grid[i][j] === 'o'){
-                point.obstacle = true;
-            } 
-            if(!overlapAllowed){
-                if(grid[i][j] === 'x') point.obstacle = true
-            }
-            
+            if(grid[i][j] === 'o') point.obstacle = true;
+            if(!overlapAllowed) if(grid[i][j] === 'x') point.obstacle = true;
             map[i][j] = point;
         }
     }
@@ -42,7 +30,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
     while(openSet.getMin()){
         const current = openSet.getMin();
         if(current.x === goal.x && current.y === goal.y){
-            resolve(buildPath(current))
+            resolve(buildPath(current, overlapAllowed))
         }
 
         openSet.removeSmallest();
@@ -74,12 +62,19 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         resolve(PATH_NOT_FOUND[1])
     }   
 
-    function buildPath( start ){
+    function buildPath( start, overlap ){
         const path = [start];
         let point = start;
         do {
             point = map[point.cameFrom.y][point.cameFrom.x]
-            if(grid[point.y][point.x] === 'x' && point.x !== start.x && point.y !== start.y) point.overlap = true
+
+            if(overlap) 
+            if(
+                grid[point.y][point.x] === 'x' && 
+                point.x !== start.x && 
+                point.y !== start.y
+            ) point.overlap = true;
+            
 
             path.push(point)
         } while (point.cameFrom)
@@ -102,6 +97,20 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         }
         if(y + 1 < rows){
             if(!map[y + 1][x].obstacle) neighbors.push(map[y + 1][x])
+        }
+        if(h.name = "euclidianDistance"){
+            if(x + 1 < rows && y - 1 > 0){
+                if(!map[y - 1][x + 1].obstacle) neighbors.push(map[y - 1][x + 1])
+            }
+            if(x - 1 > 0 && y - 1 > 0){
+                if(!map[y - 1][x - 1].obstacle) neighbors.push(map[y - 1][x - 1])
+            }
+            if(x - 1 > 0 && y + 1 < columns){
+                if(!map[y + 1][x - 1].obstacle) neighbors.push(map[y + 1][x - 1])
+            }
+            if(x + 1 < rows && y + 1 < columns){
+                if(!map[y + 1][x + 1].obstacle) neighbors.push(map[y + 1][x + 1])
+            }
         }
         return neighbors;
     }
