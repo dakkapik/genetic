@@ -38,6 +38,7 @@ function fetchCleanPath () {
                 cell.style.backgroundColor = `rgba(${red}, ${green}, ${blue})`
                 matrix[position.y][position.x] = 'x'
                 // if(position.overlap) cell.style.backgroundColor = '#ffff00'
+                // TO CHECK OVERLAP ^^^^^
                 if(position.cameFrom){
                     if(position.cameFrom.x === position.x){
                         if(position.cameFrom.y > position.y){
