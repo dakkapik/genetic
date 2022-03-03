@@ -1,4 +1,5 @@
 function midPointCircle(position, radius){
+
     const circle =[];
     let x = radius;
     let y = 0;
@@ -41,16 +42,18 @@ function midPointCircle(position, radius){
 }
 
 function validMidPointCircle (matrix, circleValues) {
+    const EXCLUDED_VALUES = new Set()
+    EXCLUDED_VALUES.add('x')
+    EXCLUDED_VALUES.add('o')
+    EXCLUDED_VALUES.add('k')
+
     const inBounds = circleValues.filter(position => (
         position.x > -1 && 
         position.x < matrix[0].length && 
         position.y > -1 && 
         position.y < matrix.length))
 
-    return inBounds.filter(position => (
-        matrix[position.y][position.x] !== 'o' &&
-        matrix[position.y][position.x] !== 'x'
-    ))
+    return inBounds.filter(position => !EXCLUDED_VALUES.has(matrix[position.y][position.x]))
 }
 
 module.exports.validMidPointCircle = validMidPointCircle;
