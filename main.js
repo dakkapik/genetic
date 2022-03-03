@@ -31,7 +31,7 @@ for(let i = 0; i < matrix.length; i ++){
     }
 }
 
-const main = async _ => {
+const main = async (h) => {
     try {
         let currentPosition = STARTING_POSITION
         const path = []
@@ -71,9 +71,9 @@ const main = async _ => {
                 console.log(dirtyCells)
             }
             console.log("============================================")
-            let miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance)
-            
-            if(miniPath === PATH_NOT_FOUND[0]) miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance, true)
+
+            let miniPath = await Astar(matrix, currentPosition, randomHeading, h)
+            if(miniPath === PATH_NOT_FOUND[0]) miniPath = await Astar(matrix, currentPosition, randomHeading, h, true)
 
             if (miniPath === PATH_NOT_FOUND[1]){
                 matrix[randomHeading.y][randomHeading.x] = 'k';
@@ -125,7 +125,7 @@ const main = async _ => {
     
 }
 
-main()
+main(euclidianDistance)
 
 function codify (err, code) {
     err.code = code

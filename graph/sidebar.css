@@ -8,6 +8,7 @@ html, body{
 .side-bar{
     padding-right: 3vh;
     border-right: 2px solid;
+    margin-right: 3vh;
 }
 
 .side-bar > div {
