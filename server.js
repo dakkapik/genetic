@@ -14,14 +14,18 @@ app.use(express.static('public'))
 
 app.post('/matrix', async (req, res) => {
     const matrix = req.body;
+    // if no dir, create it
+    const testArrayNum = readdirSync('./public/testArray').length;
 
-    const testArrayNum = readdirSync('./testArray').length
-    console.log(matrix)
-    const stream = createWriteStream(`./testArray/matrix${testArrayNum + 1}.json`);
+    const stream = createWriteStream(`./public/testArray/matrix_${testArrayNum + 1}.json`);
 
     stream.write('[\n')
-    matrix.forEach(row => {
-        stream.write(JSON.stringify(row) + ',\n')
+    matrix.forEach((row, index)=> {
+        if(matrix.length === index + 1){
+            stream.write(JSON.stringify(row) + '\n')
+        } else {
+            stream.write(JSON.stringify(row) + ',\n')
+        }
     });
     stream.write(']')
 
