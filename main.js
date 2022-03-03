@@ -3,13 +3,15 @@ const { midPointCircle, validMidPointCircle } = require("./methods/midPointCircl
 const { manhattamDistance, euclidianDistance } = require("./methods/heuristic")
 const { createWriteStream, writeFile } = require("fs")
 
-const matrix = require("./testArray/hardArray.json")
+const matrix = require("./public/testArray/matrix_9.json")
+
 const SENSOR_RANGE = 5;
 const STARTING_POSITION = {x: 0, y: 0}
 // const END_POSITION = {}
 // add end position?
 const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
 const dirtyCells = new Set()
+const inaccessible = [];
 
 for(let i = 0; i < matrix.length; i ++){
     for(let j = 0; j < matrix[0].length; j++){
@@ -21,18 +23,19 @@ const main = async _ => {
     try {
         let currentPosition = STARTING_POSITION
         const path = []
+        
         while(dirtyCells.size > 0){
             //increase sensor range if this fails
-            let scanAttempts = 0;
             let examineInnerRange = true;
             let scanedValues;
+            let scanAttempts = 0;
             //if no scaned values, gotta change this
             do {
                 if(examineInnerRange){
                     scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, SENSOR_RANGE - scanAttempts))
                     if(scanAttempts === SENSOR_RANGE - 1) examineInnerRange = false
                 } else {
-                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, scanAttempts + 2))
+                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, scanAttempts + 1))
                 }
                 scanAttempts ++;
             } while (scanedValues.length === 0)
@@ -48,32 +51,50 @@ const main = async _ => {
             console.log("============================================")
             let miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance)
             
-            if(miniPath === PATH_NOT_FOUND[0]){
-                miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance, true)
-            }
-            if(miniPath === PATH_NOT_FOUND[1]){
-                throw codify(new Error ("path not found while allowing overlap"),
-                PATH_NOT_FOUND[1]) 
-            }
+            if(miniPath === PATH_NOT_FOUND[0]) miniPath = await Astar(matrix, currentPosition, randomHeading, manhattamDistance, true)
 
-            miniPath.forEach(point => {
-                cellNumber = (matrix.length * point.y) + point.x;
+            if (miniPath === PATH_NOT_FOUND[1]){
+                console.log(PATH_NOT_FOUND[1], currentPosition)
+                matrix[randomHeading.y][randomHeading.x] = 'k';
+                cellNumber = (matrix.length * randomHeading.y) + randomHeading.x;
                 dirtyCells.delete(cellNumber);
-                
-                matrix[point.y][point.x] = 'x'
-            });
+                inaccessible.push(cellNumber);
+                // SOMETHING TO HANDLE NOT INACCESSIBLE
 
-            path.push(miniPath);
-            currentPosition = randomHeading;
+            } else {
+
+                miniPath.forEach(point => {
+                    cellNumber = (matrix.length * point.y) + point.x;
+                    dirtyCells.delete(cellNumber);
+                    matrix[point.y][point.x] = 'x';
+                });
+    
+                path.push(miniPath);
+                currentPosition = randomHeading;
+            }
+
         }
 
-        writeFile("./public/path.json", JSON.stringify(path), (err) => {
-            if(err) return console.error("ERROR: ",err)
-            else console.log("wrote path successfully")
-        })
+        const stream = createWriteStream("./public/path.json")
+        stream.on("error", function (err) {throw codify(err), "WRITE_STREAM_ERROR"})
 
+        stream.write('[\n')
+        path.forEach((minipath, index) => {
+            if(path.length === index + 1){
+                stream.write(JSON.stringify(minipath) + '\n')
+            } else {
+                stream.write(JSON.stringify(minipath) + ',\n')
+            }
+        });
+        stream.write(']')
+
+        stream.end(()=> console.log('Path written succesfully'))
+
+        writeFile('./public/current_matrix.json', JSON.stringify(matrix), (err)=> {if(err) throw codify(err), "WRITE_STREAM_ERROR"})
+        writeFile('./public/inaccessible.json', JSON.stringify(inaccessible), (err) => {if(err) throw codify(err), "WRITE_STREAM_ERROR"})
+        
     } catch (err) {
-        console.error(err)
+        console.error("COUGHT ERROR: ",err)
         /*
         on pathfinder fail, 
         switch to allow overlap?
@@ -82,6 +103,7 @@ const main = async _ => {
     }
     
 }
+
 main()
 
 function codify (err, code) {
