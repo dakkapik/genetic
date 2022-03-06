@@ -6,6 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const { manhattamDistance } = require("./methods/heuristic")
 const { createWriteStream, readdirSync, existsSync, mkdirSync} = require("fs")
+const writeFormated = require("./methods/writeFormated");
+const { resolve } = require("path");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,32 +15,13 @@ app.use(bodyParser.json());
 app.use(express.static('public'))
 
 app.post('/matrix', async (req, res) => {
-    const matrix = req.body;
-    const TEST_ARRAY_DIR = './public/testArray';
-
-    if (!existsSync('./public')){
-        mkdirSync('./public');
+    try {
+        const matrix = req.body;
+        const result = await writeFormated.matrix(matrix)
+        res.send(result).status(200)
+    } catch (err){
+        res.send(err).status(400)
     }
-
-    if (!existsSync(TEST_ARRAY_DIR)){
-        mkdirSync(TEST_ARRAY_DIR);
-    }
-
-    const testArrayNum = readdirSync(TEST_ARRAY_DIR).length;
-
-    const stream = createWriteStream(TEST_ARRAY_DIR + `/matrix_${testArrayNum + 1}.json`);
-
-    stream.write('[\n')
-    matrix.forEach((row, index)=> {
-        if(matrix.length === index + 1){
-            stream.write(JSON.stringify(row) + '\n')
-        } else {
-            stream.write(JSON.stringify(row) + ',\n')
-        }
-    });
-    stream.write(']')
-
-    stream.end(() => res.status(200))
 })
 
 app.get('/', async (req, res) => {

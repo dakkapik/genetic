@@ -1,10 +1,16 @@
 const Astar = require("./methods/AStar")
 const { midPointCircle, validMidPointCircle } = require("./methods/midPointCircle")
 const { manhattamDistance, euclidianDistance } = require("./methods/heuristic")
-const { createWriteStream, writeFile, readdirSync} = require("fs")
+const { existsSync, writeFile, readdirSync} = require("fs")
+const writeFormated = require("./methods/writeFormated");
 
-const TEST_ARRAY_DIR = './public/testArray';
-const matrix = require(`./public/testArray/matrix_${readdirSync(TEST_ARRAY_DIR).length}.json`)
+const MATRIX_STORAGE_DIR = './public/matrixStorage';
+const MATRIX_NUMBER = readdirSync(MATRIX_STORAGE_DIR).length
+const MATRIX_NAME = `matrix_${MATRIX_NUMBER}`
+const MATRIX_FILE = `${MATRIX_NAME}.json`;
+const PATH_STORAGE_DIR = `./public/path/matrix_${MATRIX_NUMBER}`;
+
+const matrix = require(`./public/matrixStorage/${MATRIX_FILE}`)
 
 const SENSOR_RANGE = 5;
 const STARTING_POSITION = {x: 0, y: 0};
@@ -112,23 +118,12 @@ const main = async (h) => {
 
         }
 
-        const stream = createWriteStream("./public/path.json")
-        stream.on("error", function (err) {throw codify(err), "WRITE_STREAM_ERROR"})
+        console.log(await writeFormated.path(path, MATRIX_NAME))
 
-        stream.write('[\n')
-        path.forEach((minipath, index) => {
-            if(path.length === index + 1){
-                stream.write(JSON.stringify(minipath) + '\n')
-            } else {
-                stream.write(JSON.stringify(minipath) + ',\n')
-            }
-        });
-        stream.write(']')
-
-        stream.end(()=> console.log('Path written succesfully'))
-
-        writeFile('./public/current_matrix.json', JSON.stringify(matrix), (err)=> {if(err) throw codify(err), "WRITE_STREAM_ERROR"})
-        writeFile('./public/inaccessible.json', JSON.stringify(inaccessible), (err) => {if(err) throw codify(err), "WRITE_STREAM_ERROR"})
+        if(!existsSync(PATH_STORAGE_DIR + "/matrixStorage")){
+            console.log(await writeFormated.matrix(matrix, PATH_STORAGE_DIR))
+            writeFile(PATH_STORAGE_DIR+ '/matrixStorage/inaccessible.json', JSON.stringify(inaccessible), (err) => {if(err) throw codify(err), "WRITE_STREAM_ERROR"})
+        }
         
     } catch (err) {
         console.error("COUGHT ERROR: ",err)
