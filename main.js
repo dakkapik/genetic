@@ -23,11 +23,9 @@ if(matrix.length > matrix[0].length){
 const dirtyCells = new Set()
 const inaccessible = [];
 
-
-
 for(let i = 0; i < matrix.length; i ++){
     for(let j = 0; j < matrix[0].length; j++){
-        if(matrix[i][j] !== 'o') dirtyCells.add((matrix.length * i+ j))
+        if(matrix[i][j] !== 'o') dirtyCells.add((matrix.length * i + j))
     }
 }
 
@@ -52,20 +50,38 @@ const main = async (h) => {
                     //add <scanAttempts - 1> for more frecuent error
                 }
                 scanAttempts ++;
-
-                if(scanAttempts > greatestDimension) console.log(scanAttempts)
             } while (scanedValues.length === 0 && scanAttempts < greatestDimension)
             
             //why does mid point circle fail??
             //fails with a small set of numbers
             // can't find them? //declared as something else?
-            if(scanedValues.length === 0) throw codify("mid point circle failed", "MID_POINT_CIRCLE_FAIL") 
+
+            let randomHeading;
+
+            if(scanedValues.length === 0) {
+                // if midCircle failed to find a point, just use a random point
+                console.log("SCAN CIRCLE FAILED: USING RANDOM ANY VALUE")
+                let randomStop = Math.round((dirtyCells.size - 1) * Math.random())
+
+                console.log("RANDOM STOP: ", randomStop)
+                let index = 0
+                for(let cell of dirtyCells.values()){
+                    if(index === randomStop) {
+                        const x = cell % matrix[0].length
+                        const y = (cell - x) / matrix[0].length
+                        randomHeading = {x, y}
+                        console.log("cell: ", cell,"\nindex: ", index)
+                    }
+                    index++;
+                }
+            } else {
+                randomHeading = scanedValues[Math.round(Math.random() * (scanedValues.length - 1))]
+            }
             // add something to check scaned values? 
 
-            const randomSelector = Math.round(Math.random() * (scanedValues.length - 1))
-            const randomHeading = scanedValues[randomSelector]
+            
 
-            console.log("ITERARION ", path.length , ": ",randomHeading)
+            console.log("ITERATION ", path.length , " HEADING: ",randomHeading)
             console.log("remaining dirty cells: ",dirtyCells.size)
             if(dirtyCells.size < 5){
                 console.log(dirtyCells)
