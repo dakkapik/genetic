@@ -39,7 +39,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
 
         for(let i = 0; i < neighbors.length; i++){
             const currentNeighbor = neighbors[i]
-            const temptingGScore = current.g + 1;
+            const temptingGScore = current.g + distance(current, currentNeighbor);
 
             if(temptingGScore < currentNeighbor.g){
                 map[currentNeighbor.y][currentNeighbor.x].cameFrom = {x: current.x, y: current.y};
@@ -62,6 +62,19 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         resolve(PATH_NOT_FOUND[1])
     }   
 
+    function distance (current, neighbor){
+        if(
+            current.x === neighbor.x + 1 && current.y === neighbor.y + 1 ||
+            current.x === neighbor.x + 1 && current.y === neighbor.y - 1 ||
+            current.x === neighbor.x - 1 && current.y === neighbor.y + 1 ||
+            current.x === neighbor.x - 1 && current.y === neighbor.y - 1 
+        ){
+            return Math.sqrt(2)
+        } else {
+            return 1
+        }
+    }
+
     function buildPath( start, overlap ){
         const path = [start];
         let point = start;
@@ -74,7 +87,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
                 point.x !== start.x && 
                 point.y !== start.y
             ) point.overlap = true;
-            
+
 
             path.push(point)
         } while (point.cameFrom)
