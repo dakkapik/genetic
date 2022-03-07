@@ -8,7 +8,7 @@ class Point{
         this.obstacle = false;
         this.cameFrom = undefined;
         // OVERLAP NOT WORKING AS INTENDED
-        this.name = undefined;
+        this.gene = undefined;
         // this.cameFromDirection = undefined;
         // add clean?
     }

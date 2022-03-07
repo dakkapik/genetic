@@ -17,7 +17,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         for(let j = 0; j < columns; j++){
             const point = new Point(j, i)
             // add other letters here
-            point.name = i * rows + j
+            point.gene = i * rows + j
             if(grid[i][j] === 'o') point.obstacle = true;
             if(!overlapAllowed) if(grid[i][j] === 'x') point.obstacle = true;
             map[i][j] = point;
