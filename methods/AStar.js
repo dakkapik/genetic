@@ -10,6 +10,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
     const openSet = new MinHeap();
 
     const map = new Array(rows);
+    const sqrt2 = Math.sqrt(2);
 
     for(let i = 0; i < rows; i++){
         map[i] = new Array(columns)
@@ -69,9 +70,9 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
             current.x === neighbor.x - 1 && current.y === neighbor.y + 1 ||
             current.x === neighbor.x - 1 && current.y === neighbor.y - 1 
         ){
-            return Math.sqrt(2)
+            return sqrt2;
         } else {
-            return 1
+            return 1;
         }
     }
 
