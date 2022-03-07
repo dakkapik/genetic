@@ -30,14 +30,15 @@ function path (array, matrixName, dirPath = "./public") {
     return new Promise ((resolve, reject) => {
         const PATH_STORAGE_DIR = dirPath + "/path"
         const PATH_MATRIX_DIR = PATH_STORAGE_DIR + "/" + matrixName
-
+        
         if (!existsSync(dirPath)) mkdirSync(dirPath);
         if (!existsSync(PATH_STORAGE_DIR)) mkdirSync(PATH_STORAGE_DIR);
         if(!existsSync(PATH_MATRIX_DIR)) mkdirSync(PATH_MATRIX_DIR);
-       
+        
         const pathNum = readdirSync(PATH_MATRIX_DIR).length;
-
-        const stream = createWriteStream(PATH_MATRIX_DIR + "/solution_" + pathNum + ".json")
+        const solutionPathName = PATH_MATRIX_DIR + "/solution_" + pathNum + ".json"
+        
+        const stream = createWriteStream(solutionPathName)
 
         stream.on("error", function (err) {reject( codify(err), "WRITE_STREAM_ERROR")})
 
@@ -51,7 +52,7 @@ function path (array, matrixName, dirPath = "./public") {
         });
         stream.write(']')
 
-        stream.end(()=> resolve("Path written successfully..."))
+        stream.end(()=> resolve(solutionPathName))
     })
 }
 
