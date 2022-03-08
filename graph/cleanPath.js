@@ -1,7 +1,7 @@
 // MAKE ARRAY SELECTOR FROM DB?
 const cleanPathButton = document.getElementById("clean-path-button")
 const cleanPathVisualButton = document.getElementById("clean-path-visual-button")
-const historySlider = document.getElementById("history-slider")
+// const historySlider = document.getElementById("history-slider")
 
 cleanPathButton.addEventListener("click", fetchCleanPath)
 cleanPathVisualButton.addEventListener("click", fetchCleanPathVisual)
@@ -63,14 +63,14 @@ function fetchCleanPath () {
 
 
 function fetchCleanPathVisual() {
-    fetch("http://localhost:3000/matrixStorage/matrix_1.json")
+    fetch("http://localhost:3000/matrixStorage/matrix_13.json")
     .then(response =>response.json())
     .then(data => updateMatrixDisplay(data))
     .catch(err =>console.error(err))
 
     
     // MAKE SOMETHING TO LINK PATH TO MATRIX
-    fetch("http://localhost:3000/path/matrix_1/solution_7.json")
+    fetch("http://localhost:3000/path/matrix_13/solution_4.json")
     .then(response =>response.json())
     .then(data => {
         console.log(data)
@@ -85,8 +85,7 @@ function fetchCleanPathVisual() {
                 i++;
             }
             if(i > data.length - 1) clearInterval(interval)
-        }, 1
-        )
+        }, 100)
     })
     .catch(err =>console.error(err))
 }
