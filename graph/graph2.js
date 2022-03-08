@@ -1,9 +1,9 @@
 const matrixDisplay = document.getElementById("matrix");
 const GRAPH_WIDTH = 800;
 const GRAPH_HEIGHT = 800;
-let columns = 28;
-let rows = 28;
-let obstacleRatio = 0.3;
+let columns = 7;
+let rows = 7;
+let obstacleRatio = 0;
 let matrix = generateMatrixObstract(obstacleRatio);
 // let matrix = <SOME MATRIX>
 

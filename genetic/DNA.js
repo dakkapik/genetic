@@ -1,10 +1,10 @@
 module.exports = function generateDNA (matrix, STARTING_POSITION) {
-    const Astar = require("./AStar")
-    const { midPointCircle, validMidPointCircle } = require("./midPointCircle")
+    const Astar = require("../pathing/AStar")
+    const { midPointCircle, validMidPointCircle } = require("../methods/midPointCircle")
     const { existsSync, writeFile, readdirSync} = require("fs")
     // ALL PATHS NEED TO BE BETTER
-    const writeFormated = require("./writeFormated");
-    const codify = require("./codify")
+    const writeFormated = require("../utils/writeFormated");
+    const codify = require("../methods/codify")
 
     const MATRIX_STORAGE_DIR = './public/matrixStorage';
     const MATRIX_NUMBER = readdirSync(MATRIX_STORAGE_DIR).length
@@ -14,7 +14,7 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
 
     return new Promise (async (resolve, reject) => {
     try {
-        const h = require("./heuristic").euclidianDistance
+        const h = require("../methods/heuristic").manhattamDistance
         const SENSOR_RANGE = 5;
         // const END_POSITION = {}
         // add end position?
