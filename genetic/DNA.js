@@ -1,6 +1,6 @@
 module.exports = function generateDNA (matrix, STARTING_POSITION) {
     const Astar = require("../pathing/AStar")
-    const { midPointCircle, validMidPointCircle } = require("../methods/midPointCircle")
+    const { validMidPointCircle } = require("../methods/midPointCircle")
     const { existsSync, writeFile, readdirSync} = require("fs")
     // ALL PATHS NEED TO BE BETTER
     const writeFormated = require("../utils/writeFormated");
@@ -48,10 +48,10 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
             //if no scaned values, gotta change this
             do {
                 if(examineInnerRange){
-                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, SENSOR_RANGE - scanAttempts))
+                    scanedValues = validMidPointCircle(currentPosition, SENSOR_RANGE - scanAttempts, matrix)
                     if(scanAttempts === SENSOR_RANGE) examineInnerRange = false
                 } else {
-                    scanedValues = validMidPointCircle(matrix, midPointCircle(currentPosition, scanAttempts))
+                    scanedValues = validMidPointCircle(currentPosition, scanAttempts, matrix)
                     //add <scanAttempts - 1> for more frecuent error
                 }
                 scanAttempts ++;

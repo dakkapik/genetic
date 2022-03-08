@@ -41,7 +41,9 @@ function midPointCircle(position, radius){
 
 }
 
-function validMidPointCircle (matrix, circleValues) {
+function validMidPointCircle (pos, rad, matrix) {
+    const circleValues = midPointCircle(pos, rad)
+
     const EXCLUDED_VALUES = new Set()
     EXCLUDED_VALUES.add('x')
     EXCLUDED_VALUES.add('o')
