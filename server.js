@@ -5,9 +5,7 @@ const aStar = require("./methods/AStar")
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { manhattamDistance } = require("./methods/heuristic")
-const { createWriteStream, readdirSync, existsSync, mkdirSync} = require("fs")
 const writeFormated = require("./methods/writeFormated");
-const { resolve } = require("path");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));

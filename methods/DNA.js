@@ -10,6 +10,7 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
     const MATRIX_NUMBER = readdirSync(MATRIX_STORAGE_DIR).length
     const MATRIX_NAME = `matrix_${MATRIX_NUMBER}`
     const PATH_STORAGE_DIR = `./public/path/matrix_${MATRIX_NUMBER}`;
+    const DNA_CHUNK_SIZE = 5;
 
     return new Promise (async (resolve, reject) => {
     try {
@@ -36,7 +37,7 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
             }
         }
         let currentPosition = STARTING_POSITION
-        const path = []
+        let path = []
         
         while(dirtyCells.size > 0){
             //increase sensor range if this fails
@@ -93,6 +94,7 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
             console.log("============================================")
 
             let miniPath = await Astar(matrix, currentPosition, randomHeading, h)
+
             if(miniPath === PATH_NOT_FOUND[0]) miniPath = await Astar(matrix, currentPosition, randomHeading, h, true)
 
             if (miniPath === PATH_NOT_FOUND[1]){
@@ -103,19 +105,21 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
                 // SOMETHING TO HANDLE NOT INACCESSIBLE
 
             } else {
-                const beginnig = miniPath[0]
                 // USE CHUNK ARRAY TO GET DESIRED MINIPATH LENGTH, or something else probably
+                miniPath = miniPath.reverse();
                 miniPath.forEach(point => {
                     cellNumber = (matrix.length * point.y) + point.x;
                     dirtyCells.delete(cellNumber);
                     matrix[point.y][point.x] = 'x';
+                    // path.push(point)
                 });
-    
-                path.push(miniPath);
                 currentPosition = randomHeading;
             }
 
+            path.push(miniPath)
         }
+
+        // path = chunkArray(path, DNA_CHUNK_SIZE)
 
         const solutionFileName = await writeFormated.path(path, MATRIX_NAME)
 
@@ -148,8 +152,3 @@ module.exports = function generateDNA (matrix, STARTING_POSITION) {
     
     return results;
 }
-
-// Split in group of 3 items
-var result = chunkArray([1,2,3,4,5,6,7,8], 3);
-// Outputs : [ [1,2,3] , [4,5,6] ,[7,8] ]
-console.log(result);
