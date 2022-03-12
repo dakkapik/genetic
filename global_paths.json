@@ -1,0 +1,4 @@
+{
+    "MATRIX_STORAGE": "./public/matrix_storage",
+    "PATH_STORAGE": "./public/path"
+}
