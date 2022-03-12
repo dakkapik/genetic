@@ -112,7 +112,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         if(y + 1 < rows){
             if(!map[y + 1][x].obstacle) neighbors.push(map[y + 1][x])
         }
-        if(h.name = "euclidianDistance"){
+        if(h.name === "euclidianDistance"){
             if(x + 1 < columns - 1 && y - 1 > - 1){
                 if(!map[y - 1][x + 1].obstacle) neighbors.push(map[y - 1][x + 1])
             }
