@@ -13,18 +13,16 @@ fetch(HOST)
 })
 .catch(err => console.error(err))
 
-startButton.addEventListener("click", ()=>{
-    const fetchString = HOST + "genetic"
-    fetch(fetchString)
-    .then(response => response.json())
-    .then(data => {
-        history = data
+function getCurrentGeneticData() {
+    return new Promise(async (resolve, reject) => {
+        const fetchString = HOST + "genetic"
+        fetch(fetchString)
+        .then(response => response.json())
+        .then(data => resolve(data))
+        .catch(err => reject(err))
     })
-    .catch(err => console.error(err))
-})
+}
 
 // function getMatrix() {
 //     console.log(JSON.stringify(matrix))
 //   }
-  
-  
