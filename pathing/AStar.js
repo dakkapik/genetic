@@ -1,5 +1,5 @@
 module.exports = function (grid, start, goal, h, overlapAllowed = false){  
-    return new Promise ((resolve, reject) => {
+    // return new Promise ((resolve, reject) => {
         
     const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
     const { Point, MinHeap } = require("./AstarClases")
@@ -31,7 +31,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
     while(openSet.getMin()){
         const current = openSet.getMin();
         if(current.x === goal.x && current.y === goal.y){
-            resolve(buildPath(current, overlapAllowed))
+            return(buildPath(current, overlapAllowed))
         }
 
         openSet.removeSmallest();
@@ -57,10 +57,10 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
 
     //resolve string if path not found
     if(!overlapAllowed){
-        resolve(PATH_NOT_FOUND[0])
+        return (PATH_NOT_FOUND[0])
     } else {
         //reject here?
-        resolve(PATH_NOT_FOUND[1])
+        return (PATH_NOT_FOUND[1])
     }   
 
     function distance (current, neighbor){
@@ -128,5 +128,5 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         }
         return neighbors;
     }
-    })
+    // })
 }
