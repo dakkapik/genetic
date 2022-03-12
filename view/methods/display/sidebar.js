@@ -25,36 +25,11 @@ getMatrixButton.onclick = getMatrix;
 postMatrixButton.onclick = postMatrix; 
 setIterationsButton.onclick = updateHistorySlide;
 
-function postMatrix() {
-
-    const PORT = "3000";
-    const HOST = "localhost";
-    const requestString = "http://" + HOST + ':' + PORT + "/matrix";
-    const stringifiedArray = JSON.stringify(matrix);
-
-    fetch(requestString , {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: stringifiedArray,
-    })
-    .then(response => console.log(response.code))
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
 function updateHistorySlide(){
     historySlider.max = iterarionInput.value;
 
     historyLength = iterarionInput.value;
 }
-
-function getMatrix() {
-  console.log(JSON.stringify(matrix))
-}
-
 
 historySlider.oninput = function() {    
     console.log(this.value)
