@@ -16,7 +16,15 @@ fetch(HOST)
 function getCurrentGeneticData() {
     return new Promise(async (resolve, reject) => {
         const fetchString = HOST + "genetic"
-        fetch(fetchString)
+        const stringifiedMatrix = JSON.stringify(matrix)
+        console.log("SENDING CURRENT MATRIX...")
+        fetch(fetchString, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: stringifiedMatrix,
+          })
         .then(response => response.json())
         .then(data => resolve(data))
         .catch(err => reject(err))
