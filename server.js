@@ -17,6 +17,7 @@ app.post('/matrix', async (req, res) => {
         const matrix = req.body;
         const result = await writeFormated.matrix(matrix)
         res.send(JSON.stringify(result)).status(200)
+        
     } catch (err){
         res.send(err).status(400)
     }

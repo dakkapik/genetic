@@ -13,12 +13,9 @@ playbackButton.addEventListener("click", ()=> {
             console.log("FETCHING DATA...")
             getCurrentGeneticData()
             .then((currentPopulation) => {
-                meta = currentPopulation;
-                currentPopulation.chromosomeHistory.forEach(element => {
-                    element = JSON.parse(element)
-                    // FIX THIS MONSTROSITY
-                    history.push({matrix: element.cleanedMatrix, chromosome: element})
-                })
+                currentPopulation.forEach(population => {
+                    history.push(JSON.parse(population))
+                });
                 startPlayback()
             })
             .catch(err => console.error("FETCH GENETIC DATA ERROR: ", err))
@@ -32,8 +29,11 @@ function startPlayback() {
     console.log("STARTING PLAYBACK...")
     console.log(history)
     playback = setInterval(() => {
-        updateMatrixDisplay(history[currentState].matrix)
-        displayCurrentChromosome(history[currentState].chromosome.genes)
+        removeCanvas()
+        setCanvas()
+        history[currentState].population.forEach(chromosome => {
+            if(chromosome)  displayCurrentChromosome(chromosome.genes)
+        })
         if(currentState < history.length - 1){
             currentState ++
             generationDisplay.innerHTML = currentState

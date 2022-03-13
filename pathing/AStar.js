@@ -17,7 +17,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
         for(let j = 0; j < columns; j++){
             const point = new Point(j, i)
             // add other letters here
-            point.gene = i * rows + j
+            point.encode(rows)
             if(grid[i][j] === 'o') point.obstacle = true;
             if(!overlapAllowed) if(grid[i][j] === 'x') point.obstacle = true;
             map[i][j] = point;
@@ -57,10 +57,13 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
 
     //resolve string if path not found
     if(!overlapAllowed){
-        return (PATH_NOT_FOUND[0])
+        //somthing about this
+        console.log("ASTAR ERROR: ",PATH_NOT_FOUND[0])
+        return [{x:0,y:0}]
     } else {
+        console.log("ASTAR ERROR: ", PATH_NOT_FOUND[1])
         //reject here?
-        return (PATH_NOT_FOUND[1])
+        return [{x:0,y:0}]
     }   
 
     function distance (current, neighbor){
@@ -79,6 +82,7 @@ module.exports = function (grid, start, goal, h, overlapAllowed = false){
     function buildPath( start, overlap ){
         const path = [start];
         let point = start;
+        if(!point.cameFrom) return path
         do {
             point = map[point.cameFrom.y][point.cameFrom.x]
 

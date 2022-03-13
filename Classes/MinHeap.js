@@ -1,19 +1,3 @@
-class Point{
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-        this.f = Infinity;
-        this.g = Infinity;
-        // this.h = 0;
-        this.obstacle = false;
-        this.cameFrom = undefined;
-        // OVERLAP NOT WORKING AS INTENDED
-        this.gene = undefined;
-        // this.cameFromDirection = undefined;
-        // add clean?
-    }
-}
-
 class MinHeap {
     constructor () {
         this.heap = [null]
@@ -96,4 +80,3 @@ class MinHeap {
 }
 
 module.exports.MinHeap = MinHeap;
-module.exports.Point = Point;
