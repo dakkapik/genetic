@@ -35,6 +35,13 @@ function removeChilds (parent) {
     };
 };
 
+function displayCurrentChromosome (chromosome) {
+    chromosome.forEach(gene => {
+        document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "yellow"
+    });
+}
+
+
 function updateMatrixDisplay ( grid ) {
     removeChilds(matrixDisplay)
     for (let y = 0; y < grid.length; y++){

@@ -28,9 +28,10 @@ playbackButton.addEventListener("click", ()=> {
 
 function startPlayback() {
     console.log("STARTING PLAYBACK...")
+    console.log(history)
     playback = setInterval(() => {
-        updateMatrixDisplay(history[currentState])
-
+        updateMatrixDisplay(history[currentState].matrix)
+        displayCurrentChromosome(history[currentState].chromosome.genes)
         if(currentState < history.length - 1){
             currentState ++
             generationDisplay.innerHTML = currentState
@@ -59,7 +60,8 @@ function rewindPlayback () {
     if(history != 0 && currentState - 1 > -1){
         currentState --
         generationDisplay.innerHTML = currentState
-        updateMatrixDisplay(history[currentState])
+        updateMatrixDisplay(history[currentState].matrix)
+        displayCurrentChromosome(history[currentState].chromosome.genes)
     }
 }
 
@@ -67,6 +69,7 @@ function forwardPlayback () {
     if(history != 0 && currentState + 1 < history.length){
         currentState ++
         generationDisplay.innerHTML = currentState
-        updateMatrixDisplay(history[currentState])
+        updateMatrixDisplay(history[currentState].matrix)
+        displayCurrentChromosome(history[currentState].chromosome.genes)
     }
 }

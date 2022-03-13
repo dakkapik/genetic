@@ -45,6 +45,12 @@ function generateMatrix (newMatrix) {
     updateMatrixDisplay()
 };
 
+function displayCurrentChromosome (chromosome) {
+    chromosome.forEach(gene => {
+        document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "yellow"
+    });
+}
+
 function updateMatrixDisplay() {
     removeChilds(matrixDisplay);
     
