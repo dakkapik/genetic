@@ -11,22 +11,53 @@
 <body>
     <div class="side-bar">
         <div>
-            <h1>playback</h1>
-            <button id="playback-button"></button>
-            <button id="reset-button">RESET</button>
-        </div>
-        <div style="justify-content:  flex-end;">
-            <button id="rewind-button">←</button>
-            <button id="forward-button">→</button>
-        </div>
-        <div>
-            <h1>file</h1>
-            <button id="post-button">save</button>    
+            <div class="util-title">
+                <h1>Playback</h1>
+            </div>
+            <div class="util">
+                <button id="playback-button"></button>
+                <button id="reset-button">RESET</button>
+            </div>
         </div>
         <div>
-            <h1>open</h1>
-            <select id="matrix-select" name="matrix">
-            </select>
+            <div class="util-title">
+                <h1>Playback speed</h1>
+            </div>
+            <div class="util">
+                <select id="playback-speed-select" name="playback-speed">
+                    <option value=1000>slow</option>
+                    <option value=2>very fast</option>
+                    <option value=20>fast</option>
+                    <option value=200>medium</option>
+                    <option value=2000>really slow</option>
+                </select>
+            </div>
+            
+        </div>
+        <div>
+            <div class="util-title">
+                <h1>generation: </h1><h1 id="generation-counter"></h1>
+            </div>
+            <div class="util">
+                <button id="rewind-button">←</button>
+                <button id="forward-button">→</button>
+            </div>
+        </div>
+        <div>
+            <div class="util-title">
+                <h1>File</h1>
+            </div>
+            <div class="util">
+                <button id="post-button">save</button>    
+            </div>
+        </div>
+        <div>
+            <div class="util-title">
+                <h1>Open</h1>
+            </div>
+            <div class="util">
+                <select id="matrix-select" name="matrix"></select>
+            </div>
         </div>
     </div>
     <div class="matrix" id="matrix"></div>
