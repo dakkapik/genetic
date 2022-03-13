@@ -36,8 +36,10 @@ function removeChilds (parent) {
 };
 
 function displayCurrentChromosome (chromosome) {
-    chromosome.forEach(gene => {
-        document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "yellow"
+    chromosome.forEach((gene, index) => {
+        if(index === 0) document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "green"
+        else if(index === chromosome.length - 1) document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "green"
+        else document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "yellow"
     });
 }
 
