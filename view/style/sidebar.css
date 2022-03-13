@@ -13,17 +13,29 @@ html, body{
 
 .side-bar > div {
     display: flex;
+
 }
 
-.side-bar > div > h2 {
-    padding-right: 2vh;
+.util-title {
+    margin-right: 4rem;
+    display: flex;
+    width : 40%
 }
 
-.side-bar > div > button {
+.util {
+    display: flex;
+    width: 60%
+}
+
+
+.util > select {
+    flex-grow: 1
+}
+
+.util > button {
     font-size: large;
     display: flex;
-    padding-right: 2vh;
-    margin: 1vh;
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
 }
