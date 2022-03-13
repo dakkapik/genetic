@@ -59,10 +59,22 @@
                 <select id="matrix-select" name="matrix"></select>
             </div>
         </div>
+        <div>
+            <div class="util-title">
+                <h1>EDIT TERRAIN</h1>
+            </div>
+            <div class="util">
+                <input type="checkbox" id="edit-terrain-checkbox">
+            </div>
+        </div>
     </div>
-    <div class="matrix" id="matrix"></div>
+    <div id="matrix-container">
+        <div class="matrix" id="matrix"></div>
+    </div>
 </body>
 <script src="./methods/display/graph2.js"></script>
+<script src="./methods/canvas/setup.js"></script>
+<script src="./methods/canvas/draw.js"></script>
 <script src="./methods/genetic/setup.js"></script>
 <script src="./methods/CRUD/post.js"></script>
 <script src="./methods/CRUD/get.js"></script>

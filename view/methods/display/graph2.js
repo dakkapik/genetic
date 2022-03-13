@@ -36,6 +36,7 @@ function removeChilds (parent) {
 };
 
 function displayCurrentChromosome (chromosome) {
+    drawLine(chromosome)
     chromosome.forEach((gene, index) => {
         if(index === 0) document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "green"
         else if(index === chromosome.length - 1) document.getElementById(`${gene.x}-${gene.y}`).style.backgroundColor = "green"

@@ -32,6 +32,11 @@ html, body{
     flex-grow: 1
 }
 
+.util > input {
+    width: 80px;
+    height: 80px;
+}
+
 .util > button {
     font-size: large;
     display: flex;

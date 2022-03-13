@@ -12,11 +12,13 @@ playbackButton.addEventListener("click", ()=> {
         } else {
             console.log("FETCHING DATA...")
             getCurrentGeneticData()
-            .then(({ generation: g, history: h }) => {
-                meta = g;
-                h.forEach(stage => {
-                    history.push(JSON.parse(stage))
-                });
+            .then((currentPopulation) => {
+                meta = currentPopulation;
+                currentPopulation.chromosomeHistory.forEach(element => {
+                    element = JSON.parse(element)
+                    // FIX THIS MONSTROSITY
+                    history.push({matrix: element.cleanedMatrix, chromosome: element})
+                })
                 startPlayback()
             })
             .catch(err => console.error("FETCH GENETIC DATA ERROR: ", err))
