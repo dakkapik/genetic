@@ -1,27 +1,28 @@
-class Gene{
-    constructor(x, y){
+module.exports = class Gene{
+    constructor(x, y, rows){
         this.x = x;
         this.y = y;
-        this.f = Infinity;
-        this.g = Infinity;
+        this.code;
+        this.cleanedBy = [];
+
+        this.encode( rows )
+        // console.log("CODE: ", this.code)
+        // this.f = Infinity;
+        // this.g = Infinity;
         // this.h = 0;
-        this.obstacle = false;
-        this.cameFrom = undefined;
-        // OVERLAP NOT WORKING AS INTENDED
-        this.gene;
+        // this.obstacle = false;
+        // this.cameFrom = undefined;
         // this.cameFromDirection = undefined;
         // add clean?
     }
 
     encode(rows) {
-        this.gene = this.y * rows + this.x
+        this.code = this.y * rows + this.x
     }
 
     decode(columns, gene) {
-        this.gene = gene
+        this.code = gene
         this.x = gene % columns
         this.y = (gene - this.x) / columns
     }
 }
-
-module.exports.Gene = Gene;

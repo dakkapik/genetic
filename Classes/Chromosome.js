@@ -3,25 +3,22 @@ const { manhattamDistance } = require("../methods/heuristic")
 const AStar = require("../pathing/AStar")
 const SQRT2 = Math.sqrt(2)
 
-class Chromosome {
-    constructor(num, matrix) {
-        this.length
-        this.primeMatrix = matrix
-        this.cleanedMatrix = matrix;
-        this.startPoint = this.randomStart(matrix[0].length, matrix.length)
-        const circle = validMidPointCircle(this.startPoint, num, this.primeMatrix)
-        this.endPoint = this.randomGoal(circle)
-        this.genes = AStar(matrix, this.startPoint, this.endPoint, manhattamDistance);
+module.exports = class Chromosome {
+    constructor( matrixPrimus, matrixGene, matrixPoints ) {
+        this.sensorRadius = 5;
+        this.genes = [];
         //problematic ^
         this.distance = 0;
         this.displacement = 0;
-        this.cleaned = 0;
+        this.free = 0;
         //fail scenario, what do?
-        this.fitness = 0
-        this.inmortal = false
+        this.fitness = 0;
+        this.inmortal = false;
 
-        this.distance = this.getDistance(matrix)
-        this.displacement = this.getDisplacement()
+        this.createGenes( matrixGene, matrixPoints )
+
+        // this.distance = this.getDistance( matrix )
+        // this.displacement = this.getDisplacement()
     }
 
     calcFitness( worstScore ){
@@ -35,15 +32,32 @@ class Chromosome {
         // this.fitness = Math.pow(this.fitness , 2) + 0.0001
     }
 
-    randomStart (maxDomain, maxRange) {
-        //make no start on obstacle
-        const x = Math.floor(Math.random() * maxDomain)
-        const y = Math.floor(Math.random() * maxRange)
-        return {x,y}
-    }
+    createGenes ( matrixGene, matrixPoints ) {
+        let path = false
+        let safe = 0
+        while(!path){
+            const maxDomain = matrixPoints[0].length 
+            const maxRange = matrixPoints.length
+            const start = {x: Math.floor(Math.random() * maxDomain), y: Math.floor(Math.random() * maxRange)}
+            while(matrixPoints[start.y][start.x] === 'o') {
+                start.x = Math.floor(Math.random() * maxDomain) 
+                start.y = Math.floor(Math.random() * maxRange)
+            }
+            //ERROR HERE: 
+            const circle = validMidPointCircle(start, this.sensorRadius, matrixPoints)
 
-    randomGoal (circleArray) {
-        return circleArray[Math.floor(Math.random() * circleArray.length)]
+            const end = circle[Math.floor(Math.random() * circle.length)]
+
+            path = AStar(matrixPoints, start, end, manhattamDistance)
+            // if(!path) console.log("PATH NOT FOUND:", path)
+            if(safe > 10) break
+            safe++
+        }
+
+        path.forEach(( point, index ) => {
+            const gene = matrixGene[point.y][point.x] 
+            this.genes[index] = gene
+        });
     }
 
     markMatrix( matrix ){
@@ -129,5 +143,3 @@ class Chromosome {
         }
     }
 }
-
-module.exports.Chromosome = Chromosome

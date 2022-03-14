@@ -1,25 +1,44 @@
-const { Chromosome } = require("./Chromosome")
+const Chromosome = require("./Chromosome");
+const Gene = require("./Gene");
+const Point = require("./Point");
 
-class Population {
+module.exports = class Population {
     constructor(m, num, matrix) {
-        this.sensorRange = 5
-        this.cleanedMatrix = JSON.stringify(matrix);
+        this.matrixPrimus = matrix
+        this.matrixGene = new Array( matrix.length )
+        this.matrixPoints = new Array ( matrix.length )
         this.population = [];
-        this.chromosomeHistory = []
         this.generations = 0;
-        this.finished;// record target?
         this.mutationRate = m;
-        this.worstScore = ( matrix.length * matrix[0].length );
-        this.perfectScore = 0
-        this.bestScore = 0
+        this.scoreAverage;
 
-        for(let i = 0; i < num; i ++){
-            this.population[i] = new Chromosome(this.sensorRange, matrix)
+        // this.finished;// record target?
+        // this.worstScore = ( matrix.length * matrix[0].length );
+        // this.perfectScore = 0
+        // this.bestScore = 0
+        
+        for(let i = 0; i < matrix.length; i++){
+            this.matrixGene[i] = new Array(matrix[i].length)
+            for(let j = 0; j < matrix[i].length; j++){
+                this.matrixGene[i][j] = new Gene(j, i, matrix.length)
+            }
         }
 
-        this.clean();
-        this.calcFitness();
-        this.createHistory();
+        for(let i = 0; i < matrix.length; i++){
+            this.matrixPoints[i] = new Array(matrix[i].length)
+            for(let j = 0; j < matrix[i].length; j++){
+                this.matrixPoints[i][j] = new Point(j, i, matrix[i][j])
+            }
+        }
+
+        for(let i = 0; i < num; i ++){
+            this.population[i] = new Chromosome( this.matrixPrimus, this.matrixGene, this.matrixPoints )
+        }
+
+
+        // this.clean();
+        // this.calcFitness();
+        // this.createHistory();
     }
 
     clean() {
@@ -130,5 +149,3 @@ class Population {
         return everything; 
     }
 }
-
-module.exports.Population = Population;

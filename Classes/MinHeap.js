@@ -1,4 +1,4 @@
-class MinHeap {
+module.exports = class MinHeap {
     constructor () {
         this.heap = [null]
     }
@@ -78,5 +78,3 @@ class MinHeap {
     }
      
 }
-
-module.exports.MinHeap = MinHeap;
