@@ -32,7 +32,9 @@ module.exports = class Chromosome {
         // this.fitness = Math.pow(this.fitness , 2) + 0.0001
     }
 
-    createGenes ( matrixGene, matrixPoints ) {
+    createGenes ( g, p ) {
+        const matrixGene = JSON.parse(g)
+        const matrixPoints = JSON.parse(p)
         let path = false
         let safe = 0
         while(!path){

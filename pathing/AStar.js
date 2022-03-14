@@ -3,7 +3,6 @@ const MinHeap = require("../Classes/MinHeap");
 module.exports = function ( matrix, start, goal, h ){  
 
     // const PATH_NOT_FOUND = ["NO_OVERLAP", "OVERLAP"]
-
     const rows = matrix.length;
     const columns = matrix[0].length;
     const sqrt2 = Math.sqrt(2);
@@ -19,7 +18,6 @@ module.exports = function ( matrix, start, goal, h ){
         const current = openSet.getMin();
         if(current.x === goal.x && current.y === goal.y){
             const path = buildPath( current )
-            if(!path) console.log( "NO PATH" )
             return path
         }
 
@@ -44,11 +42,11 @@ module.exports = function ( matrix, start, goal, h ){
         }
     }
 
-    console.log("MATRIX: ", matrix)
-    console.log("START: ", start)
-    console.log("GOAL: ", goal)
+    // console.log("MATRIX: ", matrix)
+    // console.log("START: ", start)
+    // console.log("GOAL: ", goal)
 
-    return false
+    return [{x:0,y:0}]
     //resolve string if path not found
     // if(!overlapAllowed){
     //     //somthing about this

@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const writeFormated = require("./utils/writeFormated");
-const { fetchAllMatrix } = require("./fetch/matrix")
+const { fetchAllMatrix } = require("./API/matrix")
 const genetic = require("./main")
 
 app.use(cors());
@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'))
 
 app.post('/matrix', async (req, res) => {
+    console.log("post recieved")
     try {
         const matrix = req.body;
         const result = await writeFormated.matrix(matrix)

@@ -17,7 +17,7 @@
 }
 
 .obstacle {
-    background-color: black;
+    background-color: darkred;
 }
 .dirty {
     background-color: white;

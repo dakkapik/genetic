@@ -4,7 +4,7 @@ module.exports = class Point{
         this.y = y;
         this.f = Infinity;
         this.g = Infinity;
-        this.h = 0;
+        this.h;
         this.symbol = symbol;
         this.cameFrom = undefined;
         this.obstacle

@@ -12,6 +12,7 @@ module.exports = class Population {
         this.mutationRate = m;
         this.scoreAverage;
 
+
         // this.finished;// record target?
         // this.worstScore = ( matrix.length * matrix[0].length );
         // this.perfectScore = 0
@@ -32,7 +33,7 @@ module.exports = class Population {
         }
 
         for(let i = 0; i < num; i ++){
-            this.population[i] = new Chromosome( this.matrixPrimus, this.matrixGene, this.matrixPoints )
+            this.population[i] = new Chromosome( JSON.stringify(this.matrixPrimus), JSON.stringify(this.matrixGene),JSON.stringify(this.matrixPoints)  )
         }
 
 
@@ -83,12 +84,12 @@ module.exports = class Population {
         for(let i = 0; i < this.population.length; i++){
             const partnerA = this.naturalSelection(fitnessSum)
             const partnerB = this.naturalSelection(fitnessSum)
-            let child = partnerA.crossover(partnerB, matrix, this.sensorRange)
-            child.mutate(this.mutationRate)
-            newPopulation[i] = child
+            // let child = partnerA.crossover(partnerB, matrix, this.sensorRange)
+            // child.mutate(this.mutationRate)
+            // newPopulation[i] = child
         }
 
-        this.population = newPopulation;
+        // this.population = newPopulation;
         this.generations ++;
     }
 
