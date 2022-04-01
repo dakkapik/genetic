@@ -1,27 +1,18 @@
-function midPointCircle(position, radius){
+function midPointCircle(center, radius){
 
-    const circle = [];
     let x = radius;
     let y = 0;
-    let p = radius - 1
-    let currentPoint = { x: x + position.x, y: y + position.y }
-    if(currentPoint.x == NaN) console.log(currentPoint)
+    let p = 1 - radius;
 
-    circle.push(currentPoint)
+    const circle = [{ x: x + center.x, y: y + center.y }];
 
     if(radius > 0){
-        currentPoint = {x: x + position.x, y: -(y + position.y)}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
-        currentPoint = {x: y + position.x, y: x + position.y}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
-        currentPoint = {x: -(y + position.x), y: x + position.y}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
+        circle.push({x: center.x, y: center.y - x})
+        circle.push({x: y + center.x, y: x + center.y})
+        circle.push({x: -x + center.x, y: center.y})
     }
 
-    while(x > y){
+    while(x >= y){
         y++
         if(p <= 0){
             p = p + 2 * y + 1;
@@ -29,39 +20,21 @@ function midPointCircle(position, radius){
             x --;
             p = p + 2 * y - 2 * x + 1;
         }
-        
+
         if(x < y) break;
         
-        currentPoint = {x: x + position.x, y: y + position.y}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
-        currentPoint = {x: -1*x + position.x, y: y + position.y}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
-        currentPoint = {x: x + position.x, y: -(y + position.y)}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
-        currentPoint = {x: -1*x + position.x, y: -1* y + position.y}
-        if(currentPoint.x == NaN) console.log(currentPoint)
-        circle.push(currentPoint)
+        circle.push({x: x + center.x, y: y + center.y})
+        circle.push({x: -x + center.x, y: y + center.y})
+        circle.push({x: x + center.x, y: -y + center.y})
+        circle.push({x: -x + center.x, y: -y + center.y})
         
         if(x !== y){
-            currentPoint = {x: y + position.x, y: x + position.y}
-            if(currentPoint.x == NaN) console.log(currentPoint)
-            circle.push(currentPoint)
-            currentPoint = {x: -1*y + position.x, y: x + position.y}
-            if(currentPoint.x == NaN) console.log(currentPoint)
-            circle.push(currentPoint)
-            currentPoint = {x: y + position.x, y: -1*x + position.y}
-            if(currentPoint.x == NaN) console.log(currentPoint)
-            circle.push(currentPoint)
-            currentPoint = {x: -1*y + position.x, y: -1*x + position.y}
-            if(currentPoint.x == NaN) console.log(currentPoint)
-            circle.push(currentPoint)
+            circle.push({x: y + center.x, y: x + center.y})
+            circle.push({x: -y + center.x, y: x + center.y})
+            circle.push({x: y + center.x, y: -x + center.y})
+            circle.push({x: -y + center.x, y: -x + center.y})
         }
     }
-
-
     return circle
 }
 
